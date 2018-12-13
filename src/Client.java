@@ -7,58 +7,77 @@ import java.util.Base64;
 
 public class Client implements Runnable {
 
-    Socket socket;
+  Socket socket;
 
-    public Client(Socket socket) {
-        this.socket = socket;
+  public Client(Socket socket) {
+    this.socket = socket;
+  }
+
+  @Override
+  public void run() {
+    InputStream inputStream = null;
+    OutputStream outputStream = null;
+
+    try {
+      inputStream = socket.getInputStream();
+      outputStream = socket.getOutputStream();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    @Override
-    public void run() {
-        BufferedReader reader;
-        PrintWriter writer;
+    PrintWriter writer = new PrintWriter(outputStream);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String line = in.readLine();
-            System.out.println(line);
-
-            String encodedName = Encode(line);
-            System.out.println(encodedName);
-
-//            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            String line = in.readLine();
-//            System.out.println(line);
-
-            OutputStreamWriter os = new OutputStreamWriter(socket.getOutputStream());
-            PrintWriter writer1 = new PrintWriter(os);
-            writer1.println(encodedName);
-            writer1.flush();
-
-
-        } catch (IOException e) {
-            System.out.println("Could not connect to server!");
-            e.printStackTrace();
-            return;
-        }
+    try {
+      String line = reader.readLine();
+      System.out.println(line);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    private String Encode(String line){
+//      String line = readLine(reader);
+//      System.out.println(line);
 
-        try {
-            byte[] bytes = line.getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] newLine = md.digest(bytes);
-            String line2 = new String(Base64.getEncoder().encode(newLine));
-            return line2;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException ns){
-            ns.printStackTrace();
-        }
+//        writer.println(line);
+//        writer.flush();
 
-        return null;
+//        String encodedName = Encode(line);
+//        System.out.println(encodedName);
+//        writer.println(encodedName);
+//        writer.flush();
+
+  }
+
+  private String Encode(String line) {
+
+    try {
+      byte[] bytes = line.getBytes("UTF-8");
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      byte[] newLine = md.digest(bytes);
+      String line2 = new String(Base64.getEncoder().encode(newLine));
+      return line2;
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException ns) {
+      ns.printStackTrace();
     }
+
+    return null;
+  }
+
+
+  private String readLine(BufferedReader reader) {
+    String text = "";
+
+    try {
+      text = reader.readLine();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return text;
+  }
+
 }
 
 
