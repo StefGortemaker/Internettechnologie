@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Server {
 
-    private List<Thread> clients = new ArrayList<Thread>();
+    private List<Thread> clients = new ArrayList<>();
 
     public static void main(String[] args) {
         new Server().launch();
@@ -34,15 +34,12 @@ public class Server {
                 writer.println("HELO");
                 writer.flush();
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(newClient.getInputStream()));
-                String line = in.readLine();
-                System.out.println(line);
+//                BufferedReader in = new BufferedReader(new InputStreamReader(newClient.getInputStream()));
+//                String line = in.readLine();
+//                System.out.println(line);
 
-//                    PrintStream ps = new PrintStream(newClient.getOutputStream());
-//                    ps.println("HELO");
-//
-
-
+//                PrintStream ps = new PrintStream(newClient.getOutputStream());
+//                ps.println("HELO");
 
                 // TODO: Start a ping thread for each connecting client.
 
@@ -50,9 +47,6 @@ public class Server {
         } catch (IOException e1) {
             System.out.println("Server niet beschikbaar");
         }
-
-
     }
 
 }
-
