@@ -7,76 +7,66 @@ import java.util.Base64;
 
 public class Client implements Runnable {
 
-  Socket socket;
+    private Socket socket;
 
-  public Client(Socket socket) {
-    this.socket = socket;
-  }
-
-  @Override
-  public void run() {
-    InputStream inputStream = null;
-    OutputStream outputStream = null;
-
-    try {
-      inputStream = socket.getInputStream();
-      outputStream = socket.getOutputStream();
-    } catch (IOException e) {
-      e.printStackTrace();
+    Client(Socket socket) {
+        this.socket = socket;
     }
 
-    PrintWriter writer = new PrintWriter(outputStream);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+    @Override
+    public void run() {
+        try {
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    try {
-      String line = reader.readLine();
-      System.out.println(line);
-    } catch (IOException e) {
-      e.printStackTrace();
+            writer.println("HELO");
+            writer.flush();
+
+            String name = reader.readLine();
+            System.out.println(name);
+
+            String encodedName = Encode(name);
+
+            writer.println("+OK " + encodedName);
+            System.out.println("server: +OK " + encodedName);
+
+            writer.flush();
+
+            while (true) {
+                String message = reader.readLine();
+                if (message.contains("QUIT")) {
+                    writer.println("+OK Goodbye");
+                    writer.flush();
+                    socket.close();
+                    return;
+                } else if (message.contains("PONG")) {
+                    writer.println("PING");
+                } else {
+                    System.out.println(message);
+                    message = Encode(message);
+                    writer.println("+OK " + message);
+                    writer.flush();
+                }
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
-//      String line = readLine(reader);
-//      System.out.println(line);
+    private String Encode(String line) {
 
-//        writer.println(line);
-//        writer.flush();
+        try {
+            byte[] bytes = line.getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] newLine = md.digest(bytes);
+            return new String(Base64.getEncoder().encode(newLine));
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
-//        String encodedName = Encode(line);
-//        System.out.println(encodedName);
-//        writer.println(encodedName);
-//        writer.flush();
-
-  }
-
-  private String Encode(String line) {
-
-    try {
-      byte[] bytes = line.getBytes("UTF-8");
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      byte[] newLine = md.digest(bytes);
-      String line2 = new String(Base64.getEncoder().encode(newLine));
-      return line2;
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-    } catch (NoSuchAlgorithmException ns) {
-      ns.printStackTrace();
+        return null;
     }
-
-    return null;
-  }
-
-
-  private String readLine(BufferedReader reader) {
-    String text = "";
-
-    try {
-      text = reader.readLine();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return text;
-  }
 
 }
 
