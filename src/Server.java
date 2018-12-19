@@ -32,7 +32,7 @@ public class Server {
                 System.out.println(client.getClass());
                 System.out.println("Connected Clients: " + clients.size());
 
-                // TODO: Start a ping thread for each connecting client.
+                //TODO: Start a ping thread for each connecting client.
                 Thread heartBeatThread = new Thread(new HeartBeat(clientSocket));
                 heartBeatThread.start();
                 heartBeats.add(heartBeatThread);
@@ -45,15 +45,18 @@ public class Server {
     }
 
     void disconnectClient(Client client) {
+        //TODO: Client en bijbehorende HeartBeat threads correct afsluiten
         clientSockets.remove(client.getSocket());
         System.out.println(clientSockets.size());
     }
 
-    void bcstMessage(String message) throws IOException {
-        for (Socket clientSocket: clientSockets){
-            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-            writer.println("BCST " + message);
-            writer.flush();
+    void bcstMessage(String message, Client client) throws IOException {
+        for (Socket clientSocket : clientSockets) {
+            if (!clientSocket.equals(client.getSocket())) {
+                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+                writer.println("BCST " + message);
+                writer.flush();
+            }
         }
     }
 

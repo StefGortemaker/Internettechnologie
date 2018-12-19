@@ -39,12 +39,14 @@ public class Client implements Runnable {
                     writer.flush();
                     socket.close();
                     return;
-                }  else {
+                } else if (message.contains("PONG")) {
+                    //TODO: iets met de Pong
+                } else {
                     System.out.println(message);
                     message = Encode(message);
                     writer.println("+OK " + message);
                     writer.flush();
-                    server.bcstMessage(message);
+                    server.bcstMessage(message, this);
                 }
             }
 

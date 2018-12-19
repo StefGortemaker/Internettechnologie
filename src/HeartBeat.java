@@ -8,7 +8,7 @@ public class HeartBeat implements Runnable {
 
     private Socket socket;
 
-    HeartBeat(Socket socket){
+    HeartBeat(Socket socket) {
         this.socket = socket;
     }
 
@@ -21,6 +21,10 @@ public class HeartBeat implements Runnable {
                 Thread.sleep(30000);
                 writer.println("PING");
                 writer.flush();
+
+                //TODO: check of Pong respone krijgt binnen 3 seconden
+                //writer.println("DSCN Pong timeout");
+                //writer.flush();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
