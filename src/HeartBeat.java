@@ -21,13 +21,9 @@ public class HeartBeat implements Runnable {
                 Thread.sleep(30000);
                 writer.println("PING");
                 writer.flush();
-
-                reader.readLine();
-                System.out.println("Pong Ontvangen");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }

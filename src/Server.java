@@ -9,6 +9,7 @@ public class Server {
 
     private List<Thread> clients = new ArrayList<>();
     private List<Thread> heartBeats = new ArrayList<>();
+    private List<Socket> clientSockets = new ArrayList<>();
 
     public static void main(String[] args) {
         new Server().launch();
@@ -25,9 +26,11 @@ public class Server {
                 //TODO: Start a message processing thread for each connecting client.
                 Socket clientSocket = serverSocket.accept();
                 System.out.println(clientSocket.getInetAddress() + " Has Connected");
-                Thread client = new Thread(new Client(clientSocket));
+                Thread client = new Thread(new Client(clientSocket, this));
                 client.start();
                 clients.add(client);
+                clientSockets.add(clientSocket);
+                System.out.println(client.getClass());
                 System.out.println("Connected Clients: " + clients.size());
 
                 // TODO: Start a ping thread for each connecting client.
@@ -42,22 +45,17 @@ public class Server {
         }
     }
 
-    private boolean checkUsername(String username) {
-        boolean available = false;
+    void disconnectClient(Client client) {
+        clientSockets.remove(client.getSocket());
+        System.out.println(clientSockets.size());
+    }
 
-        for (Thread client : clients) {
-            available = !client.getName().equals(username);
+    void bcstMessage(String message) throws IOException {
+        for (Socket clientSocket: clientSockets){
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+            writer.println("BCST " + message);
+            writer.flush();
         }
-
-        return available;
-    }
-
-    private void sendMessage(){
-
-    }
-
-    public void disconnectClient(Client client){
-
     }
 
 }

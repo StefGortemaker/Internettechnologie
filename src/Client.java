@@ -8,9 +8,11 @@ import java.util.Base64;
 public class Client implements Runnable {
 
     private Socket socket;
+    private Server server;
 
-    Client(Socket socket) {
+    Client(Socket socket, Server server) {
         this.socket = socket;
+        this.server = server;
     }
 
     @Override
@@ -28,8 +30,6 @@ public class Client implements Runnable {
             String encodedName = Encode(name);
 
             writer.println("+OK " + encodedName);
-            System.out.println("server: +OK " + encodedName);
-
             writer.flush();
 
             while (true) {
@@ -39,18 +39,19 @@ public class Client implements Runnable {
                     writer.flush();
                     socket.close();
                     return;
-                } else if (message.contains("PONG")) {
-                    writer.println("PING");
-                } else {
+                }  else {
                     System.out.println(message);
                     message = Encode(message);
                     writer.println("+OK " + message);
                     writer.flush();
+                    server.bcstMessage(message);
                 }
             }
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            server.disconnectClient(this);
         }
     }
 
@@ -68,6 +69,9 @@ public class Client implements Runnable {
         return null;
     }
 
+    Socket getSocket() {
+        return socket;
+    }
 }
 
 
