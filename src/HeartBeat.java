@@ -22,7 +22,7 @@ public class HeartBeat implements Runnable {
                 writer.println("PING");
                 writer.flush();
 
-                //TODO: check of Pong respone krijgt binnen 3 seconden
+                //TODO: Kijk of Pong respone krijgt binnen 3 seconden anders heartbeat & client thread afsluiten
                 //writer.println("DSCN Pong timeout");
                 //writer.flush();
             }

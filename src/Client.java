@@ -40,7 +40,7 @@ public class Client implements Runnable {
                     socket.close();
                     return;
                 } else if (message.contains("PONG")) {
-                    //TODO: iets met de Pong
+                    //TODO: stuur ping naar heartbeat thread
                 } else {
                     System.out.println(message);
                     message = Encode(message);
