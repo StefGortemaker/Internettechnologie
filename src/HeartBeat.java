@@ -18,7 +18,7 @@ public class HeartBeat implements Runnable {
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (true) {
-                Thread.sleep(30000);
+                Thread.sleep(60000);
                 writer.println("PING");
                 writer.flush();
 

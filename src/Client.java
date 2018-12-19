@@ -25,6 +25,7 @@ public class Client implements Runnable {
             writer.flush();
 
             String name = reader.readLine();
+            //TODO: userName check
             System.out.println(name);
 
             String encodedName = Encode(name);
