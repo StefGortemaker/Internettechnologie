@@ -7,9 +7,10 @@ import java.util.List;
 
 public class Server {
 
-    private List<Thread> clients = new ArrayList<>();
-    private List<Thread> heartBeats = new ArrayList<>();
-    private List<Socket> clientSockets = new ArrayList<>();
+    private List<Thread> clientThreads = new ArrayList<>();
+    private List<Thread> heartBeatThreads = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
+    private List<HeartBeat> heartBeats = new ArrayList<>();
 
     public static void main(String[] args) {
         new Server().launch();
@@ -27,15 +28,14 @@ public class Server {
                 System.out.println(clientSocket.getInetAddress() + " Has Connected");
                 Thread client = new Thread(new Client(clientSocket, this));
                 client.start();
-                clients.add(client);
-                clientSockets.add(clientSocket);
+                clientThreads.add(client);
                 System.out.println(client.getClass());
-                System.out.println("Connected Clients: " + clients.size());
+                System.out.println("Connected Clients: " + clientThreads.size());
 
                 //TODO: Start a ping thread for each connecting client.
                 Thread heartBeatThread = new Thread(new HeartBeat(clientSocket));
                 heartBeatThread.start();
-                heartBeats.add(heartBeatThread);
+                heartBeatThreads.add(heartBeatThread);
                 System.out.println("HeartBeatThread created for: " + client.getName());
 
             }
@@ -46,19 +46,18 @@ public class Server {
 
     void disconnectClient(Client client) {
         //TODO: Client en bijbehorende HeartBeat threads correct afsluiten
-        clientSockets.remove(client.getSocket());
-        System.out.println(clientSockets.size());
+        clients.remove(client);
+        System.out.println(clients.size());
     }
 
     void bcstMessage(String message, Client client) throws IOException {
-        for (Socket clientSocket : clientSockets) {
-            if (!clientSocket.equals(client.getSocket())) {
-                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+        for (Client c : clients) {
+            if (!c.getSocket().equals(client.getSocket())) {
+                PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
                 writer.println("BCST " + message);
                 writer.flush();
             }
         }
     }
-
 }
 

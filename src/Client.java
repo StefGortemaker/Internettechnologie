@@ -28,7 +28,6 @@ public class Client implements Runnable {
             System.out.println(name);
 
             String encodedName = Encode(name);
-
             writer.println("+OK " + encodedName);
             writer.flush();
 
