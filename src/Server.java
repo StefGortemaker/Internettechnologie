@@ -22,7 +22,6 @@ public class Server {
             System.out.println("Server loopt");
 
             while (true) {
-
                 //TODO: Start a message processing thread for each connecting client.
                 Socket clientSocket = serverSocket.accept();
                 System.out.println(clientSocket.getInetAddress() + " Has Connected");

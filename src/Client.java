@@ -56,7 +56,6 @@ public class Client implements Runnable {
     }
 
     private String Encode(String line) {
-
         try {
             byte[] bytes = line.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("MD5");
