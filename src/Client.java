@@ -8,38 +8,56 @@ import java.util.Base64;
 public class Client implements Runnable {
 
     private Socket socket;
+    private Server server;
 
-    Client(Socket socket) {
+    Client(Socket socket, Server server) {
         this.socket = socket;
+        this.server = server;
     }
 
     @Override
     public void run() {
-        BufferedReader reader;
-        PrintWriter writer ;
-        OutputStreamWriter os;
-
         try {
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            os = new OutputStreamWriter(socket.getOutputStream());
-            writer = new PrintWriter(os);
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            String line = reader.readLine();
-            System.out.println(line);
-
-            String encodedName = Encode(line);
-            System.out.println(encodedName);
-
-            writer.println(encodedName);
+            writer.println("HELO");
             writer.flush();
 
-        } catch (IOException e) {
-            System.out.println("Could not connect to server!");
-            e.printStackTrace();
+            String name = reader.readLine();
+            //TODO: userName check
+            System.out.println(name);
+
+            String encodedName = Encode(name);
+            writer.println("+OK " + encodedName);
+            writer.flush();
+
+            while (true) {
+                String message = reader.readLine();
+                if (message.contains("QUIT")) {
+                    writer.println("+OK Goodbye");
+                    writer.flush();
+                    socket.close();
+                    return;
+                } else if (message.contains("PONG")) {
+                    //TODO: stuur ping naar heartbeat thread
+                } else {
+                    System.out.println(message);
+                    message = Encode(message);
+                    writer.println("+OK " + message);
+                    writer.flush();
+                    server.bcstMessage(message, this);
+                }
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            server.disconnectClient(this);
         }
     }
 
-    private String Encode(String line){
+    private String Encode(String line) {
         try {
             byte[] bytes = line.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -48,6 +66,13 @@ public class Client implements Runnable {
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         return null;
     }
+
+    Socket getSocket() {
+        return socket;
+    }
 }
+
+
