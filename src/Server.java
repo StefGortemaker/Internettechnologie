@@ -33,7 +33,7 @@ public class Server {
                 System.out.println("Connected Clients: " + clientThreads.size());
 
                 //TODO: Start a ping thread for each connecting client.
-                Thread heartBeatThread = new Thread(new HeartBeat(clientSocket));
+                Thread heartBeatThread = new Thread(new HeartBeat(clientSocket, this));
                 heartBeatThread.start();
                 heartBeatThreads.add(heartBeatThread);
                 System.out.println("HeartBeatThread created for: " + client.getName());
@@ -62,6 +62,19 @@ public class Server {
 
     void addClient(Client client) {
         clients.add(client);
+    }
+
+    void addHeatBeat(HeartBeat heartBeat){
+        heartBeats.add(heartBeat);
+    }
+
+    void setclientHeartBeat(HeartBeat heartBeat){
+        for (Client client : clients){
+            System.out.println(client.getSocket().equals(heartBeat.getSocket()));
+            if (client.getSocket().equals(heartBeat.getSocket())){
+                client.setHeartBeat(heartBeat);
+            }
+        }
     }
 }
 

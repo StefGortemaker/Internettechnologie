@@ -1,33 +1,52 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class HeartBeat implements Runnable {
 
     private Socket socket;
+    private Client client;
+    private PrintWriter writer;
+    private Server server;
 
-    HeartBeat(Socket socket) {
+    HeartBeat(Socket socket, Server server) {
         this.socket = socket;
+        this.server = server;
     }
 
     @Override
     public void run() {
         try {
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            server.addHeatBeat(this);
+            server.setclientHeartBeat(this);
+            writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (true) {
-                Thread.sleep(60000);
-                writer.println("PING");
-                writer.flush();
+                Thread.sleep(10000);
+                if (client != null) {
+                    writer.println("PING");
+                    writer.flush();
+
+                    client.startTimer();
+                }
 
                 //TODO: Kijk of Pong respone krijgt binnen 3 seconden anders heartbeat & client thread afsluiten
-                //writer.println("DSCN Pong timeout");
-                //writer.flush();
+
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    void disconnectClient() {
+        writer.println("DSCN Pong timeout");
+        writer.flush();
+    }
+
+    void setClient(Client client) {
+        this.client = client;
+    }
+
+    Socket getSocket() {
+        return socket;
     }
 }
