@@ -59,5 +59,9 @@ public class Server {
             }
         }
     }
+
+    void addClient(Client client) {
+        clients.add(client);
+    }
 }
 

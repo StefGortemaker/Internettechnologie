@@ -32,6 +32,8 @@ public class Client implements Runnable {
             writer.println("+OK " + encodedName);
             writer.flush();
 
+            server.addClient(this);
+
             while (true) {
                 String message = reader.readLine();
                 if (message.contains("QUIT")) {
