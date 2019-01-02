@@ -4,8 +4,6 @@ import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Client implements Runnable {
 
@@ -13,7 +11,6 @@ public class Client implements Runnable {
     private Server server;
     private String username;
     private HeartBeat heartBeat;
-    private Timer timer;
 
     Client(Socket socket, Server server) {
         this.socket = socket;
@@ -32,13 +29,12 @@ public class Client implements Runnable {
 
             String name = reader.readLine();
             //TODO: userName check
-            System.out.println(name);
 
             String encodedName = Encode(name);
             writer.println("+OK " + encodedName);
             writer.flush();
 
-            this.username = name;
+            username = name;
 
             while (true) {
                 String message = reader.readLine();
@@ -48,8 +44,7 @@ public class Client implements Runnable {
                     socket.close();
                     return;
                 } else if (message.contains("PONG")) {
-                    //TODO: stuur ping naar heartbeat thread
-                    stopTimer();
+                    heartBeat.stopTimer();
                 } else {
                     System.out.println(message);
                     String encodedMessage = Encode(message);
@@ -59,11 +54,11 @@ public class Client implements Runnable {
                     server.bcstMessage(bcstmessage, this);
                 }
             }
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
             server.disconnectClient(this);
+            System.out.println("client stopt");
         }
     }
 
@@ -84,24 +79,13 @@ public class Client implements Runnable {
         return socket;
     }
 
-    void startTimer(){
-        this.timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                heartBeat.disconnectClient();
-            }
-        }, 3000);
-
-    }
-
-    private void stopTimer(){
-        this.timer.cancel();
-    }
-
     void setHeartBeat(HeartBeat heartBeat) {
         this.heartBeat = heartBeat;
         heartBeat.setClient(this);
+    }
+
+    HeartBeat getHeartBeat() {
+        return heartBeat;
     }
 }
 

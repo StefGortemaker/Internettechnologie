@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HeartBeat implements Runnable {
 
@@ -7,10 +9,12 @@ public class HeartBeat implements Runnable {
     private Client client;
     private PrintWriter writer;
     private Server server;
+    private Timer timer;
 
     HeartBeat(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        this.timer = new Timer();
     }
 
     @Override
@@ -19,27 +23,35 @@ public class HeartBeat implements Runnable {
             server.addHeatBeat(this);
             server.setclientHeartBeat(this);
             writer = new PrintWriter(socket.getOutputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (true) {
-                Thread.sleep(10000);
+                Thread.sleep(60000);
                 if (client != null) {
                     writer.println("PING");
                     writer.flush();
 
-                    client.startTimer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            disconnectClient();
+                        }
+                    }, 3000);
+                } else {
+                    socket.close();
+                    return;
                 }
-
-                //TODO: Kijk of Pong respone krijgt binnen 3 seconden anders heartbeat & client thread afsluiten
-
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            System.out.println("Heartbeat Stopt");
         }
     }
 
-    void disconnectClient() {
+    private void disconnectClient() {
         writer.println("DSCN Pong timeout");
         writer.flush();
+        server.disconnectClient(client);
+        client = null;
     }
 
     void setClient(Client client) {
@@ -48,5 +60,10 @@ public class HeartBeat implements Runnable {
 
     Socket getSocket() {
         return socket;
+    }
+
+    void stopTimer(){
+        timer.cancel();
+        timer = new Timer();
     }
 }
