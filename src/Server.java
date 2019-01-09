@@ -26,7 +26,6 @@ public class Server {
                 System.out.println(clientSocket.getInetAddress() + " Has Connected");
                 Thread client = new Thread(new Client(clientSocket, this));
                 client.start();
-                System.out.println(client.getClass());
 
                 // Start a ping thread for each connecting client.
                 Thread heartBeatThread = new Thread(new HeartBeat(clientSocket, this));
@@ -69,6 +68,15 @@ public class Server {
                 client.setHeartBeat(heartBeat);
             }
         }
+    }
+
+    boolean loggedIn(String userName){
+        for (Client client: clients){
+            if (userName.equals(client.getUsername())){
+                return  true;
+            }
+        }
+        return false;
     }
 }
 

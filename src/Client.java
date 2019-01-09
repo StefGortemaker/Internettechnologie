@@ -27,14 +27,26 @@ public class Client implements Runnable {
             writer.println("HELO");
             writer.flush();
 
-            String name = reader.readLine();
-            //TODO: userName check
+            String heloName = reader.readLine();
+            String parts[] = heloName.split(" ");
 
-            String encodedName = Encode(name);
-            writer.println("+OK " + encodedName);
-            writer.flush();
-
-            username = name;
+            String name = parts[1];
+            if (name.matches("^[a-zA-Z0-9_]+$")) {
+                if (!server.loggedIn(name)) {
+                    String encodedName = Encode(heloName);
+                    writer.println("+OK " + encodedName);
+                    writer.flush();
+                    username = name;
+                } else {
+                    writer.println("-ERR user already logged in");
+                    writer.flush();
+                    return;
+                }
+            } else {
+                writer.println("-ERR username has an invalid format");
+                writer.flush();
+                return;
+            }
 
             while (true) {
                 String message = reader.readLine();
@@ -50,7 +62,8 @@ public class Client implements Runnable {
                     String encodedMessage = Encode(message);
                     writer.println("+OK " + encodedMessage);
                     writer.flush();
-                    String bcstmessage = username + ": " + message;
+                    String spiltMessage[] = message.split(" ", 2);
+                    String bcstmessage = username + ": " + spiltMessage[1];
                     server.bcstMessage(bcstmessage, this);
                 }
             }
@@ -86,6 +99,10 @@ public class Client implements Runnable {
 
     HeartBeat getHeartBeat() {
         return heartBeat;
+    }
+
+    String getUsername() {
+        return username;
     }
 }
 
