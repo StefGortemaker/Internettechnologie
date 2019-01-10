@@ -40,11 +40,13 @@ public class Client implements Runnable {
                 } else {
                     writer.println("-ERR user already logged in");
                     writer.flush();
+                    socket.close();
                     return;
                 }
             } else {
                 writer.println("-ERR username has an invalid format");
                 writer.flush();
+                socket.close();
                 return;
             }
 
