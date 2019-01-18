@@ -58,25 +58,37 @@ public class Server {
         clients.add(client);
     }
 
-    void addHeatBeat(HeartBeat heartBeat){
+    void addHeatBeat(HeartBeat heartBeat) {
         heartBeats.add(heartBeat);
     }
 
-    void setclientHeartBeat(HeartBeat heartBeat){
-        for (Client client : clients){
-            if (client.getSocket().equals(heartBeat.getSocket())){
+    void setclientHeartBeat(HeartBeat heartBeat) {
+        for (Client client : clients) {
+            if (client.getSocket().equals(heartBeat.getSocket())) {
                 client.setHeartBeat(heartBeat);
             }
         }
     }
 
-    boolean loggedIn(String userName){
-        for (Client client: clients){
-            if (userName.equals(client.getUsername())){
-                return  true;
+    boolean loggedIn(String userName) {
+        for (Client client : clients) {
+            if (userName.equals(client.getUsername())) {
+                return true;
             }
         }
         return false;
+    }
+
+    void getClientList(Client c) {
+        try {
+            PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
+            for (Client client : clients) {
+                writer.println(client.getUsername() + ", ");
+                writer.flush();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
 

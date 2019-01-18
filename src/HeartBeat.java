@@ -62,7 +62,7 @@ public class HeartBeat implements Runnable {
         return socket;
     }
 
-    void stopTimer(){
+    void stopTimer() {
         timer.cancel();
         timer = new Timer();
     }

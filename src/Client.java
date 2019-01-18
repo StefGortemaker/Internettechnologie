@@ -59,6 +59,8 @@ public class Client implements Runnable {
                     return;
                 } else if (message.contains("PONG")) {
                     heartBeat.stopTimer();
+                } else if (message.contains("CLTLIST")){
+                    server.getClientList(this);
                 } else {
                     System.out.println(message);
                     String encodedMessage = Encode(message);
