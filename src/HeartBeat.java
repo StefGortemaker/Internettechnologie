@@ -11,6 +11,8 @@ public class HeartBeat implements Runnable {
     private Server server;
     private Timer timer;
 
+    private boolean running = true;
+
     HeartBeat(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -21,9 +23,9 @@ public class HeartBeat implements Runnable {
     public void run() {
         try {
             server.addHeatBeat(this);
-            server.setclientHeartBeat(this);
+            server.setClientHeartBeat(this);
             writer = new PrintWriter(socket.getOutputStream());
-            while (true) {
+            while (running) {
                 Thread.sleep(60000);
                 if (client != null) {
                     writer.println("PING");
@@ -37,6 +39,7 @@ public class HeartBeat implements Runnable {
                     }, 3000);
                 } else {
                     socket.close();
+                    client.stop();
                     return;
                 }
             }
@@ -54,16 +57,20 @@ public class HeartBeat implements Runnable {
         client = null;
     }
 
+    void stop() {
+        running = false;
+    }
+
+    void stopTimer() {
+        timer.cancel();
+        timer = new Timer();
+    }
+
     void setClient(Client client) {
         this.client = client;
     }
 
     Socket getSocket() {
         return socket;
-    }
-
-    void stopTimer() {
-        timer.cancel();
-        timer = new Timer();
     }
 }

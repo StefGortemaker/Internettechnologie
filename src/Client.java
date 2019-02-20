@@ -11,6 +11,9 @@ public class Client implements Runnable {
     private Server server;
     private String username;
     private HeartBeat heartBeat;
+    private PrintWriter writer;
+
+    private boolean running = true;
 
     Client(Socket socket, Server server) {
         this.socket = socket;
@@ -21,40 +24,34 @@ public class Client implements Runnable {
     public void run() {
         try {
             server.addClient(this);
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            writer.println("HELO");
-            writer.flush();
+            print("HELO");
 
             String heloName = reader.readLine();
             String parts[] = heloName.split(" ");
 
             String name = parts[1];
             if (name.matches("^[a-zA-Z0-9_]+$")) {
-                if (!server.loggedIn(name)) {
-                    String encodedName = Encode(heloName);
-                    writer.println("+OK " + encodedName);
-                    writer.flush();
+                if (!server.isUserLoggedIn(name)) {
+                    print("+OK " + Encode(heloName));
                     username = name;
                 } else {
-                    writer.println("-ERR user already logged in");
-                    writer.flush();
+                    print("-ERR user already logged in");
                     socket.close();
                     return;
                 }
             } else {
-                writer.println("-ERR username has an invalid format");
-                writer.flush();
+                print("-ERR username has an invalid format");
                 socket.close();
                 return;
             }
 
-            while (true) {
+            while (running) {
                 String message = reader.readLine();
                 if (message.contains("QUIT")) {
-                    writer.println("+OK Goodbye");
-                    writer.flush();
+                    print("+OK Goodbye");
                     socket.close();
                     return;
                 } else if (message.contains("PONG")) {
@@ -62,20 +59,15 @@ public class Client implements Runnable {
                 } else if (message.contains("CLTLIST")){
                     server.getClientList(this);
                 } else {
-                    System.out.println(message);
-                    String encodedMessage = Encode(message);
-                    writer.println("+OK " + encodedMessage);
-                    writer.flush();
-                    String spiltMessage[] = message.split(" ", 2);
-                    String bcstmessage = username + ": " + spiltMessage[1];
-                    server.bcstMessage(bcstmessage, this);
+                    print("+OK " + Encode(message));
+                    broadcastMessage(message);
                 }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
             server.disconnectClient(this);
-            System.out.println("client stopt");
+            System.out.println("client stops");
         }
     }
 
@@ -92,13 +84,24 @@ public class Client implements Runnable {
         return null;
     }
 
-    Socket getSocket() {
-        return socket;
+    private void broadcastMessage(String message) throws IOException {
+        String spiltMessage[] = message.split(" ", 2);
+        String broadcastMessage = username + ": " + spiltMessage[1];
+        server.broadcastMessage(broadcastMessage, this);
     }
 
-    void setHeartBeat(HeartBeat heartBeat) {
-        this.heartBeat = heartBeat;
-        heartBeat.setClient(this);
+    private void print(String message) {
+        writer.println(message);
+        writer.flush();
+    }
+
+    void stop() {
+        running = false;
+    }
+
+    //getters
+    Socket getSocket() {
+        return socket;
     }
 
     HeartBeat getHeartBeat() {
@@ -107,6 +110,12 @@ public class Client implements Runnable {
 
     String getUsername() {
         return username;
+    }
+
+    //setters
+    void setHeartBeat(HeartBeat heartBeat) {
+        this.heartBeat = heartBeat;
+        heartBeat.setClient(this);
     }
 }
 

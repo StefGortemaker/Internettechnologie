@@ -39,12 +39,15 @@ public class Server {
         }
     }
 
-    void disconnectClient(Client client) {
-        clients.remove(client);
-        heartBeats.remove(client.getHeartBeat());
+    void addClient(Client client) {
+        clients.add(client);
     }
 
-    void bcstMessage(String message, Client client) throws IOException {
+    void addHeatBeat(HeartBeat heartBeat) {
+        heartBeats.add(heartBeat);
+    }
+
+    void broadcastMessage(String message, Client client) throws IOException {
         for (Client c : clients) {
             if (!c.getSocket().equals(client.getSocket())) {
                 PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
@@ -54,31 +57,12 @@ public class Server {
         }
     }
 
-    void addClient(Client client) {
-        clients.add(client);
+    void disconnectClient(Client client) {
+        clients.remove(client);
+        client.stop();
+        heartBeats.remove(client.getHeartBeat());
+        client.getHeartBeat().stop();
     }
-
-    void addHeatBeat(HeartBeat heartBeat) {
-        heartBeats.add(heartBeat);
-    }
-
-    void setclientHeartBeat(HeartBeat heartBeat) {
-        for (Client client : clients) {
-            if (client.getSocket().equals(heartBeat.getSocket())) {
-                client.setHeartBeat(heartBeat);
-            }
-        }
-    }
-
-    boolean loggedIn(String userName) {
-        for (Client client : clients) {
-            if (userName.equals(client.getUsername())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     void getClientList(Client c) {
         try {
             PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
@@ -88,6 +72,23 @@ public class Server {
             }
         }catch(IOException e){
             e.printStackTrace();
+        }
+    }
+
+    boolean isUserLoggedIn(String userName) {
+        for (Client client : clients) {
+            if (userName.equals(client.getUsername())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void setClientHeartBeat(HeartBeat heartBeat) {
+        for (Client client : clients) {
+            if (client.getSocket().equals(heartBeat.getSocket())) {
+                client.setHeartBeat(heartBeat);
+            }
         }
     }
 }
