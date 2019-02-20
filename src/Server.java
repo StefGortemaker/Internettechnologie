@@ -63,6 +63,17 @@ public class Server {
         heartBeats.remove(client.getHeartBeat());
         client.getHeartBeat().stop();
     }
+
+    void directMessage(String message, String recievingUser) throws IOException {
+        for (Client client: clients) {
+            if (client.getUsername().equals(recievingUser)) {
+                PrintWriter writer = new PrintWriter(client.getSocket().getOutputStream());
+                writer.println("PM " + message);
+                writer.flush();
+            }
+        }
+    }
+
     void getClientList(Client c) {
         try {
             PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
