@@ -41,7 +41,7 @@ public class Client implements Runnable {
                     heartBeat.stopTimer();
                 } else if (message.contains("CLTLIST")){
                     server.getClientList(this);
-                } else if (message.contains("BSCT")){
+                } else if (message.contains("BCST")){
                     print("+OK " + Encode(message));
                     broadcastMessage(message);
                 } else if (message.contains("PM")) {

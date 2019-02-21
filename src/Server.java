@@ -70,6 +70,7 @@ public class Server {
                 PrintWriter writer = new PrintWriter(client.getSocket().getOutputStream());
                 writer.println("PM " + message);
                 writer.flush();
+                return;
             }
         }
     }
@@ -88,9 +89,7 @@ public class Server {
 
     boolean isUserLoggedIn(String userName) {
         for (Client client : clients) {
-            if (userName.equals(client.getUsername())) {
-                return true;
-            }
+            if (userName.equals(client.getUsername())) return true;
         }
         return false;
     }
@@ -99,6 +98,7 @@ public class Server {
         for (Client client : clients) {
             if (client.getSocket().equals(heartBeat.getSocket())) {
                 client.setHeartBeat(heartBeat);
+                return;
             }
         }
     }
