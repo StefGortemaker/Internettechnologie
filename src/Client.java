@@ -55,7 +55,6 @@ public class Client implements Runnable {
                     case "GRP_SEND":
                         break;
                     case "PM":
-                        print(message);
                         directMessage(message);
                         break;
                     case "PONG":
