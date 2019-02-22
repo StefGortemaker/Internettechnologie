@@ -9,6 +9,7 @@ public class Server {
 
     private List<Client> clients = new ArrayList<>();
     private List<HeartBeat> heartBeats = new ArrayList<>();
+    private List<ArrayList<Client>> groups = new ArrayList<>();
 
     public static void main(String[] args) {
         new Server().launch();

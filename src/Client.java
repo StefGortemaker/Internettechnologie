@@ -33,19 +33,38 @@ public class Client implements Runnable {
 
             while (running) {
                 String message = reader.readLine();
-                if (message.equals("QUIT")) {
-                    print("+OK Goodbye");
-                    socket.close();
-                    return;
-                } else if (message.equals("PONG")) {
-                    heartBeat.stopTimer();
-                } else if (message.contains("CLTLIST")){
-                    server.getClientList(this);
-                } else if (message.contains("BCST")){
-                    print("+OK " + Encode(message));
-                    broadcastMessage(message);
-                } else if (message.contains("PM")) {
-                    directMessage(message);
+                String splitMessage[] = message.split(" ");
+                switch (splitMessage[0]) {
+                    case "BCST":
+                        print("+OK " + Encode(message));
+                        broadcastMessage(message);
+                        break;
+                    case "CLTLIST":
+                        server.getClientList(this);
+                        break;
+                    case "GRP_CREATE":
+                        break;
+                    case "GRP_JOIN":
+                        break;
+                    case "GRP_KICK":
+                        break;
+                    case "GRP_LEAVE":
+                        break;
+                    case "GRP_LIST":
+                        break;
+                    case "GRP_SEND":
+                        break;
+                    case "PM":
+                        print(message);
+                        directMessage(message);
+                        break;
+                    case "PONG":
+                        heartBeat.stopTimer();
+                        break;
+                    case "QUIT":
+                        print("+OK Goodbye");
+                        socket.close();
+                        return;
                 }
             }
         } catch (IOException ioe) {
@@ -65,17 +84,16 @@ public class Client implements Runnable {
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
     private void broadcastMessage(String message) throws IOException {
         String spiltMessage[] = message.split(" ", 2);
-        String broadcastMessage = username + ": " + spiltMessage[1];
+        String broadcastMessage = username + " " + spiltMessage[1];
         server.broadcastMessage(broadcastMessage, this);
     }
 
-    private void checkUserName(String heloName) throws IOException{
+    private void checkUserName(String heloName) throws IOException {
         String parts[] = heloName.split(" ");
         String name = parts[1];
 
@@ -95,10 +113,11 @@ public class Client implements Runnable {
 
     private void directMessage(String message) throws IOException {
         String splitMessage[] = message.split(" ", 3);
-        String directMessage = username + ": " + splitMessage[2];
+        String directMessage = username + " " + splitMessage[2];
         String receivingUser = splitMessage[1];
 
         if (server.isUserLoggedIn(receivingUser)) {
+            print("+OK " + Encode(message));
             server.directMessage(directMessage, receivingUser);
         } else {
             print("-ERR User is not logged on");
