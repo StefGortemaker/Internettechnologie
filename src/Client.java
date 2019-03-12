@@ -1,6 +1,7 @@
 import java.io.*;
 
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -33,7 +34,7 @@ public class Client implements Runnable {
 
             while (running) {
                 String message = reader.readLine();
-                String splitMessage[] = message.split(" ");
+                String[] splitMessage = message.split(" ");
                 switch (splitMessage[0]) {
                     case "BCST":
                         print("+OK " + Encode(message));
@@ -76,24 +77,24 @@ public class Client implements Runnable {
 
     private String Encode(String line) {
         try {
-            byte[] bytes = line.getBytes("UTF-8");
+            byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] newLine = md.digest(bytes);
             return new String(Base64.getEncoder().encode(newLine));
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     private void broadcastMessage(String message) throws IOException {
-        String spiltMessage[] = message.split(" ", 2);
+        String[] spiltMessage = message.split(" ", 2);
         String broadcastMessage = username + " " + spiltMessage[1];
         server.broadcastMessage(broadcastMessage, this);
     }
 
     private void checkUserName(String heloName) throws IOException {
-        String parts[] = heloName.split(" ");
+        String[] parts = heloName.split(" ");
         String name = parts[1];
 
         if (name.matches("^[a-zA-Z0-9_]+$")) {
@@ -111,7 +112,7 @@ public class Client implements Runnable {
     }
 
     private void directMessage(String message) throws IOException {
-        String splitMessage[] = message.split(" ", 3);
+        String[] splitMessage = message.split(" ", 3);
         String directMessage = username + " " + splitMessage[2];
         String receivingUser = splitMessage[1];
 
