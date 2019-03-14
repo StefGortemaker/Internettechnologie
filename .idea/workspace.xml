@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="Updated c style notation to java notation">
-      <change afterPath="$PROJECT_DIR$/src/ServerMessage.java" afterDir="false" />
+    <list default="true" id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="Cleaned up Server and Heartbeat class&#10;Added ServerMessage class&#10;Updated Client class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HeartBeat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HeartBeat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,7 +35,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2363">
@@ -59,14 +60,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+            <state relative-caret-position="340">
+              <caret line="20" column="38" lean-forward="true" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#506#657#0" expanded="true" />
+                <element signature="e#656#657#0" expanded="true" />
                 <element signature="e#1467#1598#0" expanded="true" />
                 <element signature="e#1597#1598#0" expanded="true" />
               </folding>
@@ -94,8 +96,8 @@
         <option value="$PROJECT_DIR$/nl/saxion/internettech/Client.class" />
         <option value="$PROJECT_DIR$/src/ServerMessage.java" />
         <option value="$PROJECT_DIR$/src/Server.java" />
-        <option value="$PROJECT_DIR$/src/HeartBeat.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
+        <option value="$PROJECT_DIR$/src/HeartBeat.java" />
       </list>
     </option>
   </component>
@@ -149,7 +151,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552570922369" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552571204653" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../inettech_client" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -231,7 +233,7 @@
       <option name="presentableId" value="Default" />
       <updated>1542893202268</updated>
       <workItem from="1552413777901" duration="1338000" />
-      <workItem from="1552565848534" duration="5208000" />
+      <workItem from="1552565848534" duration="5461000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1544711197278</created>
@@ -303,11 +305,18 @@
       <option name="project" value="LOCAL" />
       <updated>1552414471608</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Cleaned up Server and Heartbeat class&#10;Added ServerMessage class&#10;Updated Client class">
+      <created>1552571156359</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1552571156359</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6546000" />
+    <option name="totallyTimeSpent" value="6799000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -358,7 +367,8 @@
     <MESSAGE value="small modifications" />
     <MESSAGE value="Updated Client with a switch case" />
     <MESSAGE value="Updated c style notation to java notation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated c style notation to java notation" />
+    <MESSAGE value="Cleaned up Server and Heartbeat class&#10;Added ServerMessage class&#10;Updated Client class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up Server and Heartbeat class&#10;Added ServerMessage class&#10;Updated Client class" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/lang/Thread.java" />
@@ -392,19 +402,6 @@
     <entry file="file://$PROJECT_DIR$/.idea/dictionaries/stefg.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#506#657#0" expanded="true" />
-            <element signature="e#1467#1598#0" expanded="true" />
-            <element signature="e#1597#1598#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -434,6 +431,20 @@
             <element signature="e#5016#5017#0" expanded="true" />
             <element signature="e#5075#5076#0" expanded="true" />
             <element signature="e#5177#5178#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="38" lean-forward="true" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#506#657#0" expanded="true" />
+            <element signature="e#656#657#0" expanded="true" />
+            <element signature="e#1467#1598#0" expanded="true" />
+            <element signature="e#1597#1598#0" expanded="true" />
           </folding>
         </state>
       </provider>
