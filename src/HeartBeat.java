@@ -19,19 +19,19 @@ public class HeartBeat implements Runnable {
         try {
             client.setHeartBeat(this);
             Timer timer = new Timer();
-            timeout = new TimerTask() {
-                @Override
-                public void run() {
-                    disconnectClient();
-                }
-            };
             while (running) {
                 Thread.sleep(60000);
                 if (client != null) {
                     client.print(ServerMessage.MessageType.PING.toString());
-                    timer.purge();
+                    timeout = new TimerTask() {
+                        @Override
+                        public void run() {
+                            disconnectClient();
+                        }
+                    };
 
                     timer.schedule(timeout, 3000);
+                    timer.purge();
                 } else {
                     return;
                 }
@@ -55,11 +55,5 @@ public class HeartBeat implements Runnable {
 
     void stopTimer() {
         timeout.cancel();
-        timeout = new TimerTask() {
-            @Override
-            public void run() {
-                disconnectClient();
-            }
-        };
     }
 }
