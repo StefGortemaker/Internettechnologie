@@ -26,7 +26,7 @@ public class HeartBeat implements Runnable {
                 }
             };
             while (running) {
-                Thread.sleep(10000);
+                Thread.sleep(60000);
                 if (client != null) {
                     client.print(ServerMessage.MessageType.PING.toString());
                     timer.purge();
