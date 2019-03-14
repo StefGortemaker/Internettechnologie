@@ -4,7 +4,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class Client implements Runnable {
 
@@ -24,11 +26,10 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            server.addClient(this);
             writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            print("HELO");
+            print(ServerMessage.MessageType.HELO.toString());
 
             checkUserName(reader.readLine());
 
@@ -41,7 +42,7 @@ public class Client implements Runnable {
                         broadcastMessage(message);
                         break;
                     case "CLTLIST":
-                        server.getClientList(this);
+                        printUsernameList();
                         break;
                     case "GRP_CREATE":
                         break;
@@ -89,8 +90,11 @@ public class Client implements Runnable {
 
     private void broadcastMessage(String message) throws IOException {
         String[] spiltMessage = message.split(" ", 2);
-        String broadcastMessage = username + " " + spiltMessage[1];
-        server.broadcastMessage(broadcastMessage, this);
+        ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
+                username + " " + spiltMessage[1]);
+        for (Client c : server.getClients()) {
+            if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
+        }
     }
 
     private void checkUserName(String heloName) throws IOException {
@@ -113,20 +117,33 @@ public class Client implements Runnable {
 
     private void directMessage(String message) throws IOException {
         String[] splitMessage = message.split(" ", 3);
-        String directMessage = username + " " + splitMessage[2];
+        ServerMessage directMessage = new ServerMessage(ServerMessage.MessageType.PM,
+                username + " " + splitMessage[2]);
         String receivingUser = splitMessage[1];
 
         if (server.isUserLoggedIn(receivingUser)) {
             print("+OK " + Encode(message));
-            server.directMessage(directMessage, receivingUser);
+            for (Client c : server.getClients()) {
+                if (c.getUsername().equals(receivingUser)){
+                    c.print(directMessage.toString());
+                    return;
+                }
+            }
         } else {
             print("-ERR User is not logged on");
         }
     }
 
-    private void print(String message) {
+    void print(String message) {
         writer.println(message);
         writer.flush();
+    }
+
+    private void printUsernameList() {
+        List<String> usernameList = new ArrayList<>();
+        for (Client client : server.getClients()) {
+            usernameList.add(client.getUsername());
+        }
     }
 
     void stop() {
@@ -134,7 +151,7 @@ public class Client implements Runnable {
     }
 
     //getters
-    Socket getSocket() {
+    private Socket getSocket() {
         return socket;
     }
 
@@ -149,7 +166,6 @@ public class Client implements Runnable {
     //setters
     void setHeartBeat(HeartBeat heartBeat) {
         this.heartBeat = heartBeat;
-        heartBeat.setClient(this);
     }
 }
 

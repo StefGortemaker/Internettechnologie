@@ -25,36 +25,22 @@ public class Server {
                 // Start a message processing thread for each connecting client.
                 Socket clientSocket = serverSocket.accept();
                 System.out.println(clientSocket.getInetAddress() + " Has Connected");
-                Thread client = new Thread(new Client(clientSocket, this));
-                client.start();
+                Client client = new Client(clientSocket, this);
+                clients.add(client);
+                Thread clientThread = new Thread(client);
+                clientThread.start();
 
                 // Start a ping thread for each connecting client.
-                Thread heartBeatThread = new Thread(new HeartBeat(clientSocket, this));
+                HeartBeat heartbeat = new HeartBeat(client, this);
+                heartBeats.add(heartbeat);
+                Thread heartBeatThread = new Thread(heartbeat);
                 heartBeatThread.start();
-                System.out.println("HeartBeatThread created for: " + client.getName());
+                System.out.println("HeartBeatThread created for: " + clientThread.getName());
 
                 System.out.println("Connected Clients: " + clients.size());
             }
         } catch (IOException e1) {
             System.out.println("Server niet beschikbaar");
-        }
-    }
-
-    void addClient(Client client) {
-        clients.add(client);
-    }
-
-    void addHeatBeat(HeartBeat heartBeat) {
-        heartBeats.add(heartBeat);
-    }
-
-    void broadcastMessage(String message, Client client) throws IOException {
-        for (Client c : clients) {
-            if (!c.getSocket().equals(client.getSocket())) {
-                PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
-                writer.println("BCST " + message);
-                writer.flush();
-            }
         }
     }
 
@@ -65,29 +51,6 @@ public class Server {
         client.getHeartBeat().stop();
     }
 
-    void directMessage(String message, String receivingUser) throws IOException {
-        for (Client client: clients) {
-            if (client.getUsername().equals(receivingUser)) {
-                PrintWriter writer = new PrintWriter(client.getSocket().getOutputStream());
-                writer.println("PM " + message);
-                writer.flush();
-                return;
-            }
-        }
-    }
-
-    void getClientList(Client c) {
-        try {
-            PrintWriter writer = new PrintWriter(c.getSocket().getOutputStream());
-            for (Client client : clients) {
-                writer.println(client.getUsername() + ", ");
-                writer.flush();
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
     boolean isUserLoggedIn(String userName) {
         for (Client client : clients) {
             if (userName.equals(client.getUsername())) return true;
@@ -95,13 +58,8 @@ public class Server {
         return false;
     }
 
-    void setClientHeartBeat(HeartBeat heartBeat) {
-        for (Client client : clients) {
-            if (client.getSocket().equals(heartBeat.getSocket())) {
-                client.setHeartBeat(heartBeat);
-                return;
-            }
-        }
+    List<Client> getClients() {
+        return clients;
     }
 }
 
