@@ -9,7 +9,7 @@ public class Server {
 
     private List<Client> clients = new ArrayList<>();
     private List<HeartBeat> heartBeats = new ArrayList<>();
-    private List<ArrayList<Client>> groups = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
 
     public static void main(String[] args) {
         new Server().launch();
@@ -44,6 +44,10 @@ public class Server {
         }
     }
 
+    void addGroup(Group group) {
+        groups.add(group);
+    }
+
     void disconnectClient(Client client) {
         clients.remove(client);
         client.stop();
@@ -58,8 +62,19 @@ public class Server {
         return false;
     }
 
+    boolean groupExists(String groupname) {
+        for (Group group : groups) {
+            if (group.getName().equals(groupname)) return true;
+        }
+        return false;
+    }
+
     List<Client> getClients() {
         return clients;
+    }
+
+    List<Group> getGroups() {
+        return groups;
     }
 }
 

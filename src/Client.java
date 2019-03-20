@@ -45,6 +45,7 @@ public class Client implements Runnable {
                         printUsernameList();
                         break;
                     case "GRP_CREATE":
+                        createGroup(message);
                         break;
                     case "GRP_JOIN":
                         break;
@@ -53,6 +54,7 @@ public class Client implements Runnable {
                     case "GRP_LEAVE":
                         break;
                     case "GRP_LIST":
+                        printGroupNames();
                         break;
                     case "GRP_SEND":
                         break;
@@ -76,6 +78,22 @@ public class Client implements Runnable {
         }
     }
 
+    private void createGroup(String message) {
+        String[] splitString = message.split(" ", 2);
+        String groupName = splitString[1];
+        if (groupName.matches("^[a-zA-Z0-9_]+$")) {
+            if (!server.groupExists(groupName)) {
+                print("+OK " + groupName);
+                Group group = new Group(groupName, this);
+                server.addGroup(group);
+            } else {
+                print("-ERR groupname already exists");
+            }
+        } else {
+            print("-ERR groupname has an invalid format");
+        }
+    }
+
     private String Encode(String line) {
         try {
             byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
@@ -88,7 +106,7 @@ public class Client implements Runnable {
         return null;
     }
 
-    private void broadcastMessage(String message) throws IOException {
+    private void broadcastMessage(String message) {
         String[] spiltMessage = message.split(" ", 2);
         ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
                 username + " " + spiltMessage[1]);
@@ -115,7 +133,7 @@ public class Client implements Runnable {
         }
     }
 
-    private void directMessage(String message) throws IOException {
+    private void directMessage(String message) {
         String[] splitMessage = message.split(" ", 3);
         ServerMessage directMessage = new ServerMessage(ServerMessage.MessageType.PM,
                 username + " " + splitMessage[2]);
@@ -139,11 +157,22 @@ public class Client implements Runnable {
         writer.flush();
     }
 
-    private void printUsernameList() {
-        List<String> usernameList = new ArrayList<>();
-        for (Client client : server.getClients()) {
-            usernameList.add(client.getUsername());
+    private void printGroupNames() {
+        StringBuilder userNameList = new StringBuilder();
+        userNameList.append("+OK ");
+        for (Group group: server.getGroups()) {
+            userNameList.append(group.getName()).append(", \n");
         }
+        print(userNameList.toString());
+    }
+
+    private void printUsernameList() {
+        StringBuilder userNameList = new StringBuilder();
+        userNameList.append("+OK ");
+        for (Client client : server.getClients()) {
+            userNameList.append(client.getUsername()).append(", \n");
+        }
+        print(userNameList.toString());
     }
 
     void stop() {
