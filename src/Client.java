@@ -48,15 +48,19 @@ public class Client implements Runnable {
                         createGroup(message);
                         break;
                     case "GRP_JOIN":
+                        joinGroup(message);
                         break;
                     case "GRP_KICK":
+                        kickUserFromGroup(message);
                         break;
                     case "GRP_LEAVE":
+                        leaveGroup(message);
                         break;
                     case "GRP_LIST":
                         printGroupNames();
                         break;
                     case "GRP_SEND":
+                        sendGroupMessage(message);
                         break;
                     case "PM":
                         directMessage(message);
@@ -82,7 +86,7 @@ public class Client implements Runnable {
         String[] splitString = message.split(" ", 2);
         String groupName = splitString[1];
         if (groupName.matches("^[a-zA-Z0-9_]+$")) {
-            if (!server.groupExists(groupName)) {
+            if (!groupExists(groupName)) {
                 print("+OK " + groupName);
                 Group group = new Group(groupName, this);
                 server.addGroup(group);
@@ -120,7 +124,7 @@ public class Client implements Runnable {
         String name = parts[1];
 
         if (name.matches("^[a-zA-Z0-9_]+$")) {
-            if (!server.isUserLoggedIn(name)) {
+            if (!isUserLoggedIn(name)) {
                 print("+OK " + Encode(heloName));
                 username = name;
             } else {
@@ -139,28 +143,67 @@ public class Client implements Runnable {
                 username + " " + splitMessage[2]);
         String receivingUser = splitMessage[1];
 
-        if (server.isUserLoggedIn(receivingUser)) {
+        if (isUserLoggedIn(receivingUser)) {
             print("+OK " + Encode(message));
             for (Client c : server.getClients()) {
-                if (c.getUsername().equals(receivingUser)){
+                if (c.getUsername().equals(receivingUser)) {
                     c.print(directMessage.toString());
                     return;
                 }
             }
-        } else {
-            print("-ERR User is not logged on");
-        }
+        } else print("-ERR User is not logged on");
     }
 
-    void print(String message) {
-        writer.println(message);
-        writer.flush();
+    private void joinGroup(String message) {
+        String[] splitMessage = message.split(" ", 2);
+        String groupName = splitMessage[1];
+
+        if (groupExists(groupName)) {
+            Group group = getGroupByGroupName(groupName);
+            if (!group.isUserInGroup(this)) {
+                print("+OK " + Encode(message));
+                group.addClient(this);
+                //TODO group.sendMessage(); protocol
+            } else print("-ERR already part of group: " + groupName);
+        } else print("–ERR group doesn't exist ");
+    }
+
+    private void leaveGroup(String message) {
+        String[] splitMessage = message.split(" ", 2);
+        String groupName = splitMessage[1];
+
+        if (groupExists(groupName)) {
+            Group group = getGroupByGroupName(groupName);
+            if (!group.isUserInGroup(this)) {
+                print("+OK " + Encode(message));
+                group.removeClient(this);
+                //TODO group.sendMessage(); protocol
+            } else print("-ERR not part of group: " + groupName);
+        } else print("–ERR group doesn't exist ");
+    }
+
+    private void kickUserFromGroup(String message) {
+        String[] splitMessage = message.split(" ", 3);
+        String groupName = splitMessage[1];
+        String clientName = splitMessage[2];
+
+        if (groupExists(groupName)) {
+            Group group = getGroupByGroupName(groupName);
+            if (group.isLeader(username)) {
+                Client client = getClientByUserName(clientName);
+                if (client != null && group.isUserInGroup(client)) {
+                    print("+OK " + Encode(message));
+                    group.removeClient(client);
+                    //TODO client.print(); protocol
+                } else print("-ERR user is not part of the group ");
+            } else print("-ERR you must be the owner of the group to kick people ");
+        } else print("–ERR group doesn't exist ");
     }
 
     private void printGroupNames() {
         StringBuilder userNameList = new StringBuilder();
         userNameList.append("+OK ");
-        for (Group group: server.getGroups()) {
+        for (Group group : server.getGroups()) {
             userNameList.append(group.getName()).append(", \n");
         }
         print(userNameList.toString());
@@ -173,6 +216,61 @@ public class Client implements Runnable {
             userNameList.append(client.getUsername()).append(", \n");
         }
         print(userNameList.toString());
+    }
+
+    private void sendGroupMessage(String message) {
+        String[] splitMessage = message.split(" ", 3);
+        String groupName = splitMessage[1];
+        ServerMessage groupMessage = new ServerMessage(ServerMessage.MessageType.GRP_SEND, groupName + " " +
+                username + " " + splitMessage[2]);
+
+        if (groupExists(groupName)) { // check if group exists
+            Group group = getGroupByGroupName(groupName); // get group
+            if (group.isUserInGroup(this)) { // check if user is in the group
+                group.sendMessage(groupMessage.toString());
+            } else {
+                print("-ERR must be part of the group before you’re able to send messages in it");
+            }
+        } else {
+            print("-ERR group doesn't exist");
+        }
+    }
+
+    private Client getClientByUserName(String userName) {
+        for (Client client : server.getClients()) {
+            if (client.getUsername().equals(userName)) {
+                return client;
+            }
+        }
+        return null;
+    }
+
+    private Group getGroupByGroupName(String groupName) {
+        for (Group group : server.getGroups()) {
+            if (group.getName().equals(groupName)) {
+                return group;
+            }
+        }
+        return null;
+    }
+
+    private boolean groupExists(String groupName) {
+        for (Group group : server.getGroups()) {
+            if (group.getName().equals(groupName)) return true;
+        }
+        return false;
+    }
+
+    private boolean isUserLoggedIn(String userName) {
+        for (Client client : server.getClients()) {
+            if (userName.equals(client.getUsername())) return true;
+        }
+        return false;
+    }
+
+    void print(String message) {
+        writer.println(message);
+        writer.flush();
     }
 
     void stop() {

@@ -55,20 +55,6 @@ public class Server {
         client.getHeartBeat().stop();
     }
 
-    boolean isUserLoggedIn(String userName) {
-        for (Client client : clients) {
-            if (userName.equals(client.getUsername())) return true;
-        }
-        return false;
-    }
-
-    boolean groupExists(String groupname) {
-        for (Group group : groups) {
-            if (group.getName().equals(groupname)) return true;
-        }
-        return false;
-    }
-
     List<Client> getClients() {
         return clients;
     }

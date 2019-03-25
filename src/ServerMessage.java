@@ -13,7 +13,7 @@ public class ServerMessage {
     }
 
     public enum MessageType {
-        BCST, DSCN, HELO, PM, PING, QUIT;
+        BCST, DSCN, GRP_SEND, HELO, PM, PING, QUIT;
 
         MessageType() {
         }

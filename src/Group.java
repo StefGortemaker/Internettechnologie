@@ -29,11 +29,21 @@ public class Group {
         return name;
     }
 
-    public ArrayList<Client> getClients() {
+    ArrayList<Client> getClients() {
         return clients;
     }
 
-    public void setGroupLeader(Client groupLeader) {
+    void removeClient(Client client) {
+        clients.remove(client);
+    }
+
+    void sendMessage(String message) {
+        for (Client client : clients) {
+            client.print(message);
+        }
+    }
+
+    void setGroupLeader(Client groupLeader) {
         this.groupLeader = groupLeader;
     }
 }
