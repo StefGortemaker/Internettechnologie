@@ -85,8 +85,8 @@ public class Client implements Runnable {
     private void createGroup(String message) {
         String[] splitString = message.split(" ", 2);
         String groupName = splitString[1];
-        if (groupName.matches("^[a-zA-Z0-9_]+$")) {
-            if (!groupExists(groupName)) {
+        if (groupName.matches("^[a-zA-Z0-9_]+$")) { // check if groupName has correct format
+            if (getGroupByGroupName(groupName) == null) { // check if group exists
                 print("+OK " + groupName);
                 Group group = new Group(groupName, this);
                 server.addGroup(group);
@@ -158,46 +158,46 @@ public class Client implements Runnable {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
 
-        if (groupExists(groupName)) {
-            Group group = getGroupByGroupName(groupName);
-            if (!group.isUserInGroup(this)) {
-                print("+OK " + Encode(message));
-                group.addClient(this);
-                //TODO group.sendMessage(); protocol
-            } else print("-ERR already part of group: " + groupName);
-        } else print("–ERR group doesn't exist ");
+        Group group = getGroupByGroupName(groupName);
+        if (group != null && !group.isUserInGroup(this)) {
+            print("+OK " + Encode(message));
+            group.addClient(this);
+            //TODO group.sendMessage(); protocol
+        } else if (group == null) print("–ERR group doesn't exist ");
+        else print("-ERR already part of group: " + groupName);
     }
 
     private void leaveGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
 
-        if (groupExists(groupName)) {
-            Group group = getGroupByGroupName(groupName);
-            if (!group.isUserInGroup(this)) {
-                print("+OK " + Encode(message));
-                group.removeClient(this);
-                //TODO group.sendMessage(); protocol
-            } else print("-ERR not part of group: " + groupName);
-        } else print("–ERR group doesn't exist ");
+
+        Group group = getGroupByGroupName(groupName);
+        if (group != null && !group.isUserInGroup(this)) {
+            print("+OK " + Encode(message));
+            group.removeClient(this);
+            //TODO group.sendMessage(); protocol
+        } else if (group == null) print("–ERR group doesn't exist ");
+        else print("-ERR not part of group: " + groupName);
     }
+
 
     private void kickUserFromGroup(String message) {
         String[] splitMessage = message.split(" ", 3);
         String groupName = splitMessage[1];
         String clientName = splitMessage[2];
 
-        if (groupExists(groupName)) {
-            Group group = getGroupByGroupName(groupName);
-            if (group.isLeader(username)) {
-                Client client = getClientByUserName(clientName);
-                if (client != null && group.isUserInGroup(client)) {
-                    print("+OK " + Encode(message));
-                    group.removeClient(client);
-                    //TODO client.print(); protocol
-                } else print("-ERR user is not part of the group ");
-            } else print("-ERR you must be the owner of the group to kick people ");
-        } else print("–ERR group doesn't exist ");
+        Group group = getGroupByGroupName(groupName);
+        if (group != null && group.isLeader(username)) {
+            Client client = getClientByUserName(clientName);
+            if (client != null && group.isUserInGroup(client)) {
+                print("+OK " + Encode(message));
+                group.removeClient(client);
+                //TODO client.print(); protocol
+            } else print("-ERR user is not part of the group ");
+
+        } else if (group == null) print("–ERR group doesn't exist ");
+        else print("-ERR you must be the owner of the group to kick people ");
     }
 
     private void printGroupNames() {
@@ -224,16 +224,12 @@ public class Client implements Runnable {
         ServerMessage groupMessage = new ServerMessage(ServerMessage.MessageType.GRP_SEND, groupName + " " +
                 username + " " + splitMessage[2]);
 
-        if (groupExists(groupName)) { // check if group exists
-            Group group = getGroupByGroupName(groupName); // get group
-            if (group.isUserInGroup(this)) { // check if user is in the group
-                group.sendMessage(groupMessage.toString());
-            } else {
-                print("-ERR must be part of the group before you’re able to send messages in it");
-            }
-        } else {
-            print("-ERR group doesn't exist");
-        }
+        Group group = getGroupByGroupName(groupName); // get group
+        if (group != null && group.isUserInGroup(this)) { // check if user is in the group
+            group.sendMessage(groupMessage.toString());
+        } else if (group == null) print("-ERR group doesn't exist");
+        else print("-ERR must be part of the group before you’re able to send messages in it");
+
     }
 
     private Client getClientByUserName(String userName) {
@@ -252,13 +248,6 @@ public class Client implements Runnable {
             }
         }
         return null;
-    }
-
-    private boolean groupExists(String groupName) {
-        for (Group group : server.getGroups()) {
-            if (group.getName().equals(groupName)) return true;
-        }
-        return false;
     }
 
     private boolean isUserLoggedIn(String userName) {
