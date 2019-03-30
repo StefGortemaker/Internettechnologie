@@ -4,9 +4,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 public class Client implements Runnable {
 
@@ -85,6 +83,7 @@ public class Client implements Runnable {
     private void createGroup(String message) {
         String[] splitString = message.split(" ", 2);
         String groupName = splitString[1];
+
         if (groupName.matches("^[a-zA-Z0-9_]+$")) { // check if groupName has correct format
             if (getGroupByGroupName(groupName) == null) { // check if group exists
                 print("+OK " + groupName);
@@ -114,6 +113,7 @@ public class Client implements Runnable {
         String[] spiltMessage = message.split(" ", 2);
         ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
                 username + " " + spiltMessage[1]);
+
         for (Client c : server.getClients()) {
             if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
         }
@@ -171,7 +171,6 @@ public class Client implements Runnable {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
 
-
         Group group = getGroupByGroupName(groupName);
         if (group != null && !group.isUserInGroup(this)) {
             print("+OK " + Encode(message));
@@ -181,18 +180,31 @@ public class Client implements Runnable {
         else print("-ERR not part of group: " + groupName);
     }
 
-
+    /**
+     * The kickUserFromGroup method removes a user from a group. It does so by firstly retrieving the group name and
+     * the name of the client that needs to be removed from the group. Then the group is looked up with use of the
+     * getGroupByGroupName method. When the group is retrieved it checks if the group isn't null and this client is
+     * the group leader. Else if the group is null this client will get an ERR message containing the message "group
+     * doesn't exists", or when the group isn't null but this client isn't the leader this client will get an ERR
+     * message containing: "you must be the owner of the group to kick people". If the group isn't null and this client
+     * is the group leader the client that needs to be removed will be retrieved and checked if that client is actually
+     * in the group. If the client isn't null and is in the group this client will get an OK message and the client will
+     * be removed from the group. Else if client is null or the user isn't in the group this client will get an ERR
+     * message containing the message: "user is not part of the group".
+     *
+     * @param message A message that contains the command, group name and the name of the client that has to be removed
+     */
     private void kickUserFromGroup(String message) {
         String[] splitMessage = message.split(" ", 3);
         String groupName = splitMessage[1];
         String clientName = splitMessage[2];
 
-        Group group = getGroupByGroupName(groupName);
-        if (group != null && group.isLeader(username)) {
-            Client client = getClientByUserName(clientName);
-            if (client != null && group.isUserInGroup(client)) {
-                print("+OK " + Encode(message));
-                group.removeClient(client);
+        Group group = getGroupByGroupName(groupName); // get group
+        if (group != null && group.isLeader(username)) { // check if group exists and if this client is the group leader
+            Client client = getClientByUserName(clientName); // get client that needs to be removed from group
+            if (client != null && group.isUserInGroup(client)) { // check if client exists and is in the group
+                print("+OK " + Encode(message)); // print OK message
+                group.removeClient(client); // remove client from group
                 //TODO client.print(); protocol
             } else print("-ERR user is not part of the group ");
 
@@ -200,6 +212,10 @@ public class Client implements Runnable {
         else print("-ERR you must be the owner of the group to kick people ");
     }
 
+    /**
+     * The printGroupNames simply prints all the names of the groups that are created on the server to the client who
+     * requested a list of group names
+     */
     private void printGroupNames() {
         StringBuilder userNameList = new StringBuilder();
         userNameList.append("+OK ");
@@ -209,6 +225,10 @@ public class Client implements Runnable {
         print(userNameList.toString());
     }
 
+    /**
+     * The printUsernameList method simply prints all the names of the clients connected to the server to the client who
+     * requested a list of usernames.
+     */
     private void printUsernameList() {
         StringBuilder userNameList = new StringBuilder();
         userNameList.append("+OK ");
@@ -218,6 +238,19 @@ public class Client implements Runnable {
         print(userNameList.toString());
     }
 
+    /**
+     * The sendGroupMessage method will send a message to all the users in a certain group. It does so by firstly
+     * splitting the message into three parts, the command, the name of the group and the message the client send to the
+     * group. Then a ServerMessage will created which will contains the MessageType GRP_SEND, the group name and the
+     * message the user wants to send to the group. After the group is looked up by the getGroupByGroupName method there
+     * is a check to see if the group exists and the user, that wants to send the message to the group, is actually part
+     * of that group.If the group doesn't exist the user will get an error saying the group doesn't exists. Else if the
+     * group exists but the user isn't part of the group the user will get an error saying he isn't part of the group.
+     * If the group exists and the user is part of the group the message will be send to all clients in that group.
+     *
+     * @param message A message that contains all elements of the message the user send to the server which should be
+     *                converted like "GRP_SEND groupName message"
+     */
     private void sendGroupMessage(String message) {
         String[] splitMessage = message.split(" ", 3);
         String groupName = splitMessage[1];
@@ -225,13 +258,19 @@ public class Client implements Runnable {
                 username + " " + splitMessage[2]);
 
         Group group = getGroupByGroupName(groupName); // get group
-        if (group != null && group.isUserInGroup(this)) { // check if user is in the group
-            group.sendMessage(groupMessage.toString());
+        if (group != null && group.isUserInGroup(this)) { // check if group exists & user is in the group
+            group.sendMessage(groupMessage.toString()); // send message to all clients in group
         } else if (group == null) print("-ERR group doesn't exist");
         else print("-ERR must be part of the group before you’re able to send messages in it");
 
     }
 
+    /**
+     * The getClientByUserName method searches for a client with a certain username within the server.
+     *
+     * @param userName The username of the client that needs to be looked up
+     * @return Returns the client with the same username, else returns null
+     */
     private Client getClientByUserName(String userName) {
         for (Client client : server.getClients()) {
             if (client.getUsername().equals(userName)) {
@@ -241,6 +280,12 @@ public class Client implements Runnable {
         return null;
     }
 
+    /**
+     * The getGroupByGroupName method searches for a group with a certain groupName within the server.
+     *
+     * @param groupName the name of the group that needs to be looked up
+     * @return Returns the group with the same groupName, else returns null
+     */
     private Group getGroupByGroupName(String groupName) {
         for (Group group : server.getGroups()) {
             if (group.getName().equals(groupName)) {
@@ -250,6 +295,12 @@ public class Client implements Runnable {
         return null;
     }
 
+    /**
+     * The isUserLoggedIn method checks if a user with a certain username exists within the client list
+     *
+     * @param userName The userName that needs to be checked
+     * @return Returns true when there is a user with a certain username within the client list, else returns false
+     */
     private boolean isUserLoggedIn(String userName) {
         for (Client client : server.getClients()) {
             if (userName.equals(client.getUsername())) return true;
@@ -257,6 +308,11 @@ public class Client implements Runnable {
         return false;
     }
 
+    /**
+     * The print method prints the message, the method receives, to the client
+     *
+     * @param message The message that needs to be printed to the client
+     */
     void print(String message) {
         writer.println(message);
         writer.flush();

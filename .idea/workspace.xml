@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/Client.java" line="189" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="Added functions to join group, send messages in group, leave group and&#10;kick users from group.&#10;added some TODOS to fix">
+    <list default="true" id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="Cleaned up Client class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
     </list>
@@ -41,15 +44,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="252" column="53" lean-forward="true" selection-start-line="252" selection-start-column="53" selection-end-line="252" selection-end-column="53" />
+            <state relative-caret-position="1649">
+              <caret line="103" column="46" lean-forward="true" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
               <folding>
-                <element signature="e#9388#9389#0" expanded="true" />
-                <element signature="e#9465#9466#0" expanded="true" />
-                <element signature="e#9529#9530#0" expanded="true" />
-                <element signature="e#9588#9589#0" expanded="true" />
-                <element signature="e#9690#9691#0" expanded="true" />
-                <marker date="1553954979889" expanded="true" signature="9683:9690" ph="{...}" />
+                <element signature="e#9402#9403#0" expanded="true" />
+                <element signature="e#9433#9434#0" expanded="true" />
+                <element signature="e#9481#9482#0" expanded="true" />
+                <element signature="e#9510#9511#0" expanded="true" />
+                <element signature="e#9542#9543#0" expanded="true" />
+                <element signature="e#9574#9575#0" expanded="true" />
+                <element signature="e#9602#9603#0" expanded="true" />
+                <element signature="e#9633#9634#0" expanded="true" />
+                <element signature="e#9693#9694#0" expanded="true" />
+                <element signature="e#9735#9736#0" expanded="true" />
+                <marker date="1553957874372" expanded="true" signature="13716:13723" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -150,7 +158,8 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553522586399" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553956822168" />
+    <property name="last.edited.regexp" value="Sample Text" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -234,7 +243,7 @@
       <workItem from="1553073913426" duration="232000" />
       <workItem from="1553074149557" duration="3228000" />
       <workItem from="1553518014081" duration="4654000" />
-      <workItem from="1553954284746" duration="690000" />
+      <workItem from="1553954284746" duration="3576000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1544711197278</created>
@@ -278,11 +287,18 @@
       <option name="project" value="LOCAL" />
       <updated>1553522649737</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Cleaned up Client class">
+      <created>1553955001496</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1553955001496</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8804000" />
+    <option name="totallyTimeSpent" value="11690000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -303,7 +319,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32900432" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32792208" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32718894" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
@@ -331,7 +347,8 @@
     <MESSAGE value="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java" />
     <MESSAGE value="Added Group class&#10;Added functions for creating groups, printing userList and printing groupList" />
     <MESSAGE value="Added functions to join group, send messages in group, leave group and&#10;kick users from group.&#10;added some TODOS to fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added functions to join group, send messages in group, leave group and&#10;kick users from group.&#10;added some TODOS to fix" />
+    <MESSAGE value="Cleaned up Client class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up Client class" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Thread.java">
@@ -380,15 +397,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="252" column="53" lean-forward="true" selection-start-line="252" selection-start-column="53" selection-end-line="252" selection-end-column="53" />
+        <state relative-caret-position="1649">
+          <caret line="103" column="46" lean-forward="true" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
           <folding>
-            <element signature="e#9388#9389#0" expanded="true" />
-            <element signature="e#9465#9466#0" expanded="true" />
-            <element signature="e#9529#9530#0" expanded="true" />
-            <element signature="e#9588#9589#0" expanded="true" />
-            <element signature="e#9690#9691#0" expanded="true" />
-            <marker date="1553954979889" expanded="true" signature="9683:9690" ph="{...}" />
+            <element signature="e#9402#9403#0" expanded="true" />
+            <element signature="e#9433#9434#0" expanded="true" />
+            <element signature="e#9481#9482#0" expanded="true" />
+            <element signature="e#9510#9511#0" expanded="true" />
+            <element signature="e#9542#9543#0" expanded="true" />
+            <element signature="e#9574#9575#0" expanded="true" />
+            <element signature="e#9602#9603#0" expanded="true" />
+            <element signature="e#9633#9634#0" expanded="true" />
+            <element signature="e#9693#9694#0" expanded="true" />
+            <element signature="e#9735#9736#0" expanded="true" />
+            <marker date="1553957874372" expanded="true" signature="13716:13723" ph="{...}" />
           </folding>
         </state>
       </provider>
