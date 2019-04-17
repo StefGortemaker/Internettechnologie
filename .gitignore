@@ -1,4 +1,3 @@
-out/*
-.idea/*
-
-*.jar
+.jar
+*.class
+.idea/workspace.xml
