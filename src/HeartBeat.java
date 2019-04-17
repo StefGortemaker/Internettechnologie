@@ -20,7 +20,7 @@ public class HeartBeat implements Runnable {
             client.setHeartBeat(this);
             Timer timer = new Timer();
             while (running) {
-                Thread.sleep(60000);
+                Thread.sleep(10000);
                 if (client != null) {
                     client.print(ServerMessage.MessageType.PING.toString());
                     timeout = new TimerTask() {
@@ -29,7 +29,6 @@ public class HeartBeat implements Runnable {
                             disconnectClient();
                         }
                     };
-
                     timer.schedule(timeout, 3000);
                     timer.purge();
                 } else {
@@ -55,5 +54,6 @@ public class HeartBeat implements Runnable {
 
     void stopTimer() {
         timeout.cancel();
+        System.out.println("stop timer");
     }
 }

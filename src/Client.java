@@ -71,6 +71,9 @@ public class Client implements Runnable {
                     case "PONG":
                         heartBeat.stopTimer();
                         break;
+                    case "REQ_FILE":
+                        requestFileTransfer(message);
+                        break;
                     case "QUIT":
                         print("+OK Goodbye");
                         socket.close();
@@ -120,9 +123,7 @@ public class Client implements Runnable {
                 username + " " + spiltMessage[1]);
 
         for (Client c : server.getClients()) {
-            if (!c.getSocket().equals(socket)) {
-                  c.print(broadcastMessage.toString());
-            }
+            if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
         }
     }
 
@@ -261,6 +262,16 @@ public class Client implements Runnable {
             userNameList.append(client.getUsername()).append(", \n");
         }
         print(userNameList.toString());
+    }
+
+    private void requestFileTransfer(String mesage) {
+        String[] splitMessage = mesage.split(" ", 3);
+        Client client = getClientByUserName(splitMessage[1]);
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.REQ_FILE,
+                username + " " + splitMessage[2]);
+        if (client != null) {
+            client.print(serverMessage.toString());
+        } else print("-ERR User is not logged on");
     }
 
     /**
