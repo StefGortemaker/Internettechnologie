@@ -34,6 +34,7 @@ public class Client implements Runnable {
             while (running) {
                 String message = reader.readLine();
                 String[] splitMessage = message.split(" ");
+                System.out.println(message);
                 switch (splitMessage[0]) {
                     case "BCST":
                         print("+OK " + Encode(message));
@@ -65,6 +66,9 @@ public class Client implements Runnable {
                         break;
                     case "PONG":
                         heartBeat.stopTimer();
+                        break;
+                    case "REQ_FILE":
+                        requestFileTransfer(message);
                         break;
                     case "QUIT":
                         print("+OK Goodbye");
@@ -236,6 +240,16 @@ public class Client implements Runnable {
             userNameList.append(client.getUsername()).append(", \n");
         }
         print(userNameList.toString());
+    }
+
+    private void requestFileTransfer(String mesage) {
+        String[] splitMessage = mesage.split(" ", 3);
+        Client client = getClientByUserName(splitMessage[1]);
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.REQ_FILE,
+                username + " " + splitMessage[2]);
+        if (client != null) {
+            client.print(serverMessage.toString());
+        } else print("-ERR User is not logged on");
     }
 
     /**
