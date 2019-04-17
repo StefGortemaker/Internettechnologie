@@ -1,49 +1,42 @@
-import java.io.*;
-import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class HeartBeat implements Runnable {
 
-    private Socket socket;
     private Client client;
-    private PrintWriter writer;
     private Server server;
-    private Timer timer;
+    private TimerTask timeout;
 
     private boolean running = true;
 
-    HeartBeat(Socket socket, Server server) {
-        this.socket = socket;
+    HeartBeat(Client client, Server server) {
         this.server = server;
-        this.timer = new Timer();
+        this.client = client;
     }
 
     @Override
     public void run() {
         try {
-            server.addHeatBeat(this);
-            server.setClientHeartBeat(this);
-            writer = new PrintWriter(socket.getOutputStream());
+            client.setHeartBeat(this);
+            Timer timer = new Timer();
             while (running) {
                 Thread.sleep(60000);
                 if (client != null) {
-                    writer.println("PING");
-                    writer.flush();
-
-                    timer.schedule(new TimerTask() {
+                    client.print(ServerMessage.MessageType.PING.toString());
+                    timeout = new TimerTask() {
                         @Override
                         public void run() {
                             disconnectClient();
                         }
-                    }, 3000);
+                    };
+
+                    timer.schedule(timeout, 3000);
+                    timer.purge();
                 } else {
-                    socket.close();
-                    client.stop();
                     return;
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             System.out.println("Heartbeat Stopt");
@@ -51,8 +44,7 @@ public class HeartBeat implements Runnable {
     }
 
     private void disconnectClient() {
-        writer.println("DSCN Pong timeout");
-        writer.flush();
+        client.print(new ServerMessage(ServerMessage.MessageType.DSCN, "pong timeout").toString());
         server.disconnectClient(client);
         client = null;
     }
@@ -62,15 +54,6 @@ public class HeartBeat implements Runnable {
     }
 
     void stopTimer() {
-        timer.cancel();
-        timer = new Timer();
-    }
-
-    void setClient(Client client) {
-        this.client = client;
-    }
-
-    Socket getSocket() {
-        return socket;
+        timeout.cancel();
     }
 }
