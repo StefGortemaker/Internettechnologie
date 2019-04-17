@@ -14,6 +14,8 @@ public class Client implements Runnable {
     private HeartBeat heartBeat;
     private PrintWriter writer;
 
+    private Encyptor encyptor;
+
     private boolean running = true;
 
     Client(Socket socket, Server server) {
@@ -26,42 +28,45 @@ public class Client implements Runnable {
         try {
             writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            encyptor = new Encyptor();
 
             print(ServerMessage.MessageType.HELO.toString());
-
             checkUserName(reader.readLine());
 
             while (running) {
-                String message = reader.readLine();
-                String[] splitMessage = message.split(" ");
+                String encryptedMessage = reader.readLine();
+                System.out.println(encryptedMessage);
+                String decryptedMessage = encyptor.decrypt(encryptedMessage);
+                System.out.println(decryptedMessage);
+                String[] splitMessage = decryptedMessage.split(" ");
                 switch (splitMessage[0]) {
                     case "BCST":
-                        print("+OK " + Encode(message));
-                        broadcastMessage(message);
+                        print("+OK " + Encode(decryptedMessage));
+                        broadcastMessage(decryptedMessage);
                         break;
                     case "CLTLIST":
                         printUsernameList();
                         break;
                     case "GRP_CREATE":
-                        createGroup(message);
+                        createGroup(decryptedMessage);
                         break;
                     case "GRP_JOIN":
-                        joinGroup(message);
+                        joinGroup(decryptedMessage);
                         break;
                     case "GRP_KICK":
-                        kickUserFromGroup(message);
+                        kickUserFromGroup(decryptedMessage);
                         break;
                     case "GRP_LEAVE":
-                        leaveGroup(message);
+                        leaveGroup(decryptedMessage);
                         break;
                     case "GRP_LIST":
                         printGroupNames();
                         break;
                     case "GRP_SEND":
-                        sendGroupMessage(message);
+                        sendGroupMessage(decryptedMessage);
                         break;
                     case "PM":
-                        directMessage(message);
+                        directMessage(decryptedMessage);
                         break;
                     case "PONG":
                         heartBeat.stopTimer();
@@ -115,12 +120,15 @@ public class Client implements Runnable {
                 username + " " + spiltMessage[1]);
 
         for (Client c : server.getClients()) {
-            if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
+            if (!c.getSocket().equals(socket)) {
+                  c.print(broadcastMessage.toString());
+            }
         }
     }
 
     private void checkUserName(String heloName) throws IOException {
-        String[] parts = heloName.split(" ");
+        String decryptedHeloName = encyptor.decrypt(heloName);
+        String[] parts = decryptedHeloName.split(" ");
         String name = parts[1];
 
         if (name.matches("^[a-zA-Z0-9_]+$")) {
@@ -331,7 +339,7 @@ public class Client implements Runnable {
      * @param message The message that needs to be printed to the client
      */
     void print(String message) {
-        writer.println(message);
+        writer.println(encyptor.encrypt(message));
         writer.flush();
     }
 
