@@ -157,12 +157,17 @@ public class Client implements Runnable {
     private void joinGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
+        ServerMessage joinMessage = new ServerMessage(ServerMessage.MessageType.GRP_JOIN,
+            username + " " + groupName);
 
         Group group = getGroupByGroupName(groupName);
         if (group != null && !group.isUserInGroup(this)) {
             print("+OK " + Encode(message));
             group.addClient(this);
+
             //TODO group.sendMessage(); protocol
+            group.sendMessage(joinMessage.toString());
+
         } else if (group == null) print("–ERR group doesn't exist ");
         else print("-ERR already part of group: " + groupName);
     }
@@ -170,12 +175,17 @@ public class Client implements Runnable {
     private void leaveGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
+        ServerMessage leaveMessage = new ServerMessage(ServerMessage.MessageType.GRP_LEAVE,
+            groupName + " " + username);
 
         Group group = getGroupByGroupName(groupName);
         if (group != null && !group.isUserInGroup(this)) {
             print("+OK " + Encode(message));
             group.removeClient(this);
+
             //TODO group.sendMessage(); protocol
+            group.sendMessage(leaveMessage.toString());
+
         } else if (group == null) print("–ERR group doesn't exist ");
         else print("-ERR not part of group: " + groupName);
     }
@@ -198,6 +208,10 @@ public class Client implements Runnable {
         String[] splitMessage = message.split(" ", 3);
         String groupName = splitMessage[1];
         String clientName = splitMessage[2];
+        ServerMessage clientKickMessage = new ServerMessage(ServerMessage.MessageType.GRP_KICK,
+            groupName);
+        ServerMessage groupKickMessage = new ServerMessage(ServerMessage.MessageType.GRP_KICK,
+            groupName + " " + username);
 
         Group group = getGroupByGroupName(groupName); // get group
         if (group != null && group.isLeader(username)) { // check if group exists and if this client is the group leader
@@ -205,7 +219,10 @@ public class Client implements Runnable {
             if (client != null && group.isUserInGroup(client)) { // check if client exists and is in the group
                 print("+OK " + Encode(message)); // print OK message
                 group.removeClient(client); // remove client from group
+
                 //TODO client.print(); protocol
+                client.sendGroupMessage(clientKickMessage.toString());
+                group.sendMessage(groupKickMessage.toString());
             } else print("-ERR user is not part of the group ");
 
         } else if (group == null) print("–ERR group doesn't exist ");
