@@ -97,16 +97,27 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * The acceptFileTransfer method sends a message to accept the file transfer.
+     *
+     * @param message A message that contains the command, the client's user name that send the file transfer request
+     *                and the file name.
+     */
     private void acceptFileTransfer(String message) {
         String[] splitString = message.split(" ", 3);
         Client client = getClientByUserName(splitString[1]);
         if (client != null) {
             ServerMessage acceptFileMessage = new ServerMessage(ServerMessage.MessageType.ACCEPT_FILE, username
-                    + " " +  splitString[2]);
+                    + " " + splitString[2]);
             client.print(acceptFileMessage.toString());
         } else print("-ERR User is not logged on");
     }
 
+    /**
+     * The broadcastMessage method will broadcast a message to all user connected to the server.
+     *
+     * @param message A message that contains the command, the client's username and the message the client sends.
+     */
     private void broadcastMessage(String message) {
         String[] spiltMessage = message.split(" ", 2);
         ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
@@ -117,13 +128,21 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * The checkuserName method checks whether a username is already taken. It does so by checking whether the username
+     * has the correct format, if not the user gets an error message. If the username has the correct format it is
+     * checked if the username isn't already in use, if the username is already in use the client gets an error message.
+     * Else the client is given the username.
+     *
+     * @param heloName A message that contains the command helo and the username this client chose.
+     */
     private void checkUserName(String heloName) throws IOException {
         String decryptedHeloName = encyptor.decrypt(heloName);
         String[] parts = decryptedHeloName.split(" ");
         String name = parts[1];
 
-        if (name.matches("^[a-zA-Z0-9_]+$")) {
-            if (!isUserLoggedIn(name)) {
+        if (name.matches("^[a-zA-Z0-9_]+$")) { // check if username has correct format
+            if (!isUserLoggedIn(name)) { // check if user already exists
                 print("+OK " + Encode(heloName));
                 username = name;
             } else {
@@ -136,6 +155,14 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * The createGroup method allows clients to create a group. It does so by checking whether the group name has the
+     * correct format, if not the user gets an error message. If the group name has the correct format it is checked if
+     * the group doesn't already exists, if the group already exists the client gets an error message. Else the group
+     * is created and this client is added and becomes the leader of the group.
+     *
+     * @param message A message that contains the command and the group name.
+     */
     private void createGroup(String message) {
         String[] splitString = message.split(" ", 2);
         String groupName = splitString[1];
@@ -153,33 +180,49 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * The denyFileTransfer method sends a message to deny the file transfer.
+     *
+     * @param message A message that contains the command, the client's user name that send the file transfer request
+     *                and the file name.
+     */
     private void denyFileTransfer(String message) {
         String[] splitString = message.split(" ", 3);
         Client client = getClientByUserName(splitString[1]);
         if (client != null) {
             ServerMessage acceptFileMessage = new ServerMessage(ServerMessage.MessageType.DENY_FILE, username
-                    + " " +  splitString[2]);
+                    + " " + splitString[2]);
             client.print(acceptFileMessage.toString());
         } else print("-ERR User is not logged on");
     }
 
+    /**
+     * The directMessage method sends a message to one particular user. It does so by checking whether the user is
+     * connected to the server. If the receiving user is connected this client will receive an +OK message and the
+     * receiving client will receive the message. Else if the receiving client isn't connected this client will get an
+     * error message containing that the receiving user isn't logged on.
+     *
+     * @param message A message that contains the command, the receiving client's username and the message send.
+     */
     private void directMessage(String message) {
         String[] splitMessage = message.split(" ", 3);
         ServerMessage directMessage = new ServerMessage(ServerMessage.MessageType.PM,
                 username + " " + splitMessage[2]);
         String receivingUser = splitMessage[1];
-
-        if (isUserLoggedIn(receivingUser)) {
+        Client client = getClientByUserName(receivingUser);
+        if (client != null) {
             print("+OK " + Encode(message));
-            for (Client c : server.getClients()) {
-                if (c.getUsername().equals(receivingUser)) {
-                    c.print(directMessage.toString());
-                    return;
-                }
-            }
+            client.print(directMessage.toString());
         } else print("-ERR User is not logged on");
     }
 
+
+    /**
+     * The encode method encodes lines with MD5 and encodes the encoded line with Base64.
+     *
+     * @param line The line that needs to be encoded
+     * @return The encoded line
+     */
     private String Encode(String line) {
         try {
             byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
@@ -191,6 +234,19 @@ public class Client implements Runnable {
         }
         return null;
     }
+
+    /**
+     * The fileTransfer method will send an incoming file from this client, to another client. It does so by first
+     * creating a DataInputStream from this client, to read the file, and a DataOutputStream for the socket of the
+     * receiving user, to write the file. The it will send the filename and the size of the file. After it will read the
+     * file from the inputStream whilst writing it to the OutputStream. At last it will flush the outputStream to send
+     * the file to the receiving user.
+     *
+     * @param message A message that contains the command, the client's user name will receive the file and the file
+     *                name.
+     * @throws IOException Throws an exception when something went wrong whilst reading or sending the file over the
+     *                      socket.
+     */
     private void fileTransfer(String message) throws IOException {
         String[] splitMessage = message.split(" ", 3);
         Client client = getClientByUserName(splitMessage[1]);
@@ -204,18 +260,29 @@ public class Client implements Runnable {
             DataInputStream clientData = new DataInputStream(socket.getInputStream());
 
             DataOutputStream outputStream = new DataOutputStream(client.getSocket().getOutputStream());
-            outputStream.writeUTF(clientData.readUTF());
-            long size = clientData.readLong();
-            outputStream.writeLong(size);
+            outputStream.writeUTF(clientData.readUTF()); // send file name
+            long size = clientData.readLong(); // get size of file
+            outputStream.writeLong(size); // send size of file
             byte[] buffer = new byte[(int) size];
+            // send bytes over socket
             while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
                 size -= bytesRead;
             }
+            outputStream.flush();
 
         } else print("-ERR User is not logged on");
     }
 
+    /**
+     * The joinGroup method allows client to join a specified group. This method Firstly checks whether the specified
+     * group exists and then checks if the client is not part of that group. If the group exists and the client is not
+     * part of the group the client will be added to the group. If the group doesn't exists the client gets a message
+     * containing the err that the group doesn't exists. Else if the client is part of the group the client gets an
+     * error message containing that the client is part of the group.
+     *
+     * @param message A message that contains the command and the group name the client wants to join
+     */
     private void joinGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
@@ -234,6 +301,15 @@ public class Client implements Runnable {
         else print("-ERR already part of group: " + groupName);
     }
 
+    /**
+     * The leaveGroup method allows clients to leave a specified group. This method Firstly checks whether the specified
+     * group exists and then checks if the client is part of that group. If the group exists and the client is part of
+     * the group the client will be removed from the group. If the group doesn't exists the client gets a message
+     * containing the err that the group doesn't exists. Else if the client is not part of the group the client gets an
+     * error message containing that the client is not part of the group.
+     *
+     * @param message A message that contains the command and the group name the client wants to leave
+     */
     private void leaveGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
@@ -317,6 +393,14 @@ public class Client implements Runnable {
         print(userNameList.toString());
     }
 
+    /**
+     * The requestFileTransfer method will simply send a file transfer request to the client this client wants to send
+     * a file to. It will checks if the receiving client exists, if the receiving client doesn't exist this client will
+     * get an error message containing that the receiving client isn't logged on.
+     *
+     * @param mesage A message that contains the command, receiving client's name and the name file that is going to be
+     *               transferred.
+     */
     private void requestFileTransfer(String mesage) {
         String[] splitMessage = mesage.split(" ", 3);
         Client client = getClientByUserName(splitMessage[1]);
@@ -407,6 +491,7 @@ public class Client implements Runnable {
         writer.flush();
     }
 
+    //stop this client from running
     void stop() {
         running = false;
     }
