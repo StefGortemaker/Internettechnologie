@@ -1,23 +1,25 @@
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Encyptor {
+class Encyptor {
 
   private String key;
   private String initVector = "OnzeEigenVector1";
+  private IvParameterSpec ivspec;
+  private SecretKeySpec skeySpec;
 
   Encyptor() {
     this.key = "DitRaadNiemand98";
+    this.ivspec = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
+    this.skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
   }
 
-  public String encrypt(String value) {
+  String encrypt(String value) {
     try {
-      IvParameterSpec ivspec = new IvParameterSpec(initVector.getBytes("UTF-8"));
-      SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
       Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
       cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivspec);
 
@@ -31,11 +33,8 @@ public class Encyptor {
     return null;
   }
 
-  public String decrypt(String encrypted) {
+  String decrypt(String encrypted) {
     try {
-      IvParameterSpec ivspec = new IvParameterSpec(initVector.getBytes("UTF-8"));
-      SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
       Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
       cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivspec);
 
