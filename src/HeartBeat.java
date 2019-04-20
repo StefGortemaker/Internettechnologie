@@ -20,7 +20,7 @@ public class HeartBeat implements Runnable {
             client.setHeartBeat(this);
             Timer timer = new Timer();
             while (running) {
-                Thread.sleep(10000);
+                Thread.sleep(60000);
                 if (client != null) {
                     client.print(ServerMessage.MessageType.PING.toString());
                     timeout = new TimerTask() {
