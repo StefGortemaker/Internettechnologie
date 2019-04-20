@@ -1,6 +1,11 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * The HeartBeat class sends a PING message to the client every 60 seconds. If it doesn't get a PONG message in response
+ * it will disconnect the corresponding client and stop itself.
+ */
+
 public class HeartBeat implements Runnable {
 
     private Client client;

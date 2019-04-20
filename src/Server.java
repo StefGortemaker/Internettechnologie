@@ -5,6 +5,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Server class waits on clients who want to connect to the server and then creates and starts the corresponding
+ * threads. It also holds a list of all connected clients and available groups.
+ */
+
 public class Server {
 
     private List<Client> clients = new ArrayList<>();
@@ -39,7 +44,7 @@ public class Server {
 
                 System.out.println("Connected Clients: " + clients.size());
             }
-        } catch (IOException e1) {
+        } catch (IOException ioe) {
             System.out.println("Server niet beschikbaar");
         }
     }

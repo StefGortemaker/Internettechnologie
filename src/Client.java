@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * The Client class handles all incoming messages from clients that are connected to the server
+ */
+
 public class Client implements Runnable {
 
     private Socket socket;
@@ -35,9 +39,7 @@ public class Client implements Runnable {
 
             while (running) {
                 String encryptedMessage = reader.readLine();
-                System.out.println(encryptedMessage);
                 String decryptedMessage = encyptor.decrypt(encryptedMessage);
-                System.out.println(decryptedMessage);
                 String[] splitMessage = decryptedMessage.split(" ");
                 switch (splitMessage[0]) {
                     case "BCST":
@@ -82,6 +84,9 @@ public class Client implements Runnable {
                         break;
                     case "TRANSFER_FILE":
                         fileTransfer(decryptedMessage);
+                        break;
+                    case "FILE_RECEIVED":
+                        fileReceived(decryptedMessage);
                         break;
                     case "QUIT":
                         print("+OK Goodbye");
@@ -245,13 +250,13 @@ public class Client implements Runnable {
      * @param message A message that contains the command, the client's user name will receive the file and the file
      *                name.
      * @throws IOException Throws an exception when something went wrong whilst reading or sending the file over the
-     *                      socket.
+     *                     socket.
      */
     private void fileTransfer(String message) throws IOException {
         String[] splitMessage = message.split(" ", 3);
         Client client = getClientByUserName(splitMessage[1]);
         if (client != null) {
-            ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.TRANSFER_FILE, splitMessage[1]
+            ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.TRANSFER_FILE, username
                     + " " + splitMessage[2]);
             client.print(serverMessage.toString());
 
@@ -275,6 +280,22 @@ public class Client implements Runnable {
     }
 
     /**
+     * The fileReceived method sends a confirmation that the file was successfully received
+     *
+     * @param message A message that contains the command, the username of the client that send the file and the
+     *                filename
+     */
+    private void fileReceived(String message) {
+        String[] splitMessage = message.split(" ", 3);
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.FILE_RECEIVED, username + " "
+                + splitMessage[2]);
+        Client client = getClientByUserName(splitMessage[1]);
+        if (client != null) {
+            client.print(serverMessage.toString());
+        }
+    }
+
+    /**
      * The joinGroup method allows client to join a specified group. This method Firstly checks whether the specified
      * group exists and then checks if the client is not part of that group. If the group exists and the client is not
      * part of the group the client will be added to the group. If the group doesn't exists the client gets a message
@@ -294,7 +315,6 @@ public class Client implements Runnable {
             print("+OK " + Encode(message));
             group.addClient(this);
 
-            //TODO group.sendMessage(); protocol
             group.sendMessage(joinMessage.toString());
 
         } else if (group == null) print("–ERR group doesn't exist ");
@@ -321,7 +341,6 @@ public class Client implements Runnable {
             print("+OK " + Encode(message));
             group.removeClient(this);
 
-            //TODO group.sendMessage(); protocol
             group.sendMessage(leaveMessage.toString());
 
         } else if (group == null) print("–ERR group doesn't exist ");
@@ -358,7 +377,6 @@ public class Client implements Runnable {
                 print("+OK " + Encode(message)); // print OK message
                 group.removeClient(client); // remove client from group
 
-                //TODO client.print(); protocol
                 client.sendGroupMessage(clientKickMessage.toString());
                 group.sendMessage(groupKickMessage.toString());
             } else print("-ERR user is not part of the group ");

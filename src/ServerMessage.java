@@ -14,7 +14,7 @@ public class ServerMessage {
 
     public enum MessageType {
         BCST, DSCN, GRP_SEND, GRP_JOIN, GRP_KICK, GRP_LEAVE, HELO, PM, PING, REQ_FILE, ACCEPT_FILE, DENY_FILE,
-        TRANSFER_FILE;
+        TRANSFER_FILE, FILE_RECEIVED;
 
         MessageType() {
         }
