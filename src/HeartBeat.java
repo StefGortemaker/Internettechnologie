@@ -29,7 +29,6 @@ public class HeartBeat implements Runnable {
                             disconnectClient();
                         }
                     };
-
                     timer.schedule(timeout, 3000);
                     timer.purge();
                 } else {
@@ -55,5 +54,6 @@ public class HeartBeat implements Runnable {
 
     void stopTimer() {
         timeout.cancel();
+        System.out.println("stop timer");
     }
 }

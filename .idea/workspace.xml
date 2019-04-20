@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/Client.java" line="189" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="added jarfile to gitignore">
+    <list default="true" id="fe3d3f23-ce73-422b-b369-a0e62a291a86" name="Default" comment="Merge branch 'Fileransfer' of https://github.com/StefGortemaker/Internettechnologie into encryptie&#10;                        &#10;                        # Conflicts:&#10;                        #&#9;.idea/workspace.xml&#10;                        #&#9;out/production/Practicum/Client.class&#10;                        #&#9;src/Client.java&#10;                        #&#9;src/ServerMessage.java">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Practicum/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HeartBeat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HeartBeat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerMessage.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,20 +44,28 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1649">
-              <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
+            <state relative-caret-position="955">
+              <caret line="213" column="13" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="13" />
+              <folding>
+                <element signature="e#17689#17690#0" expanded="true" />
+                <element signature="e#17766#17767#0" expanded="true" />
+                <element signature="e#17830#17831#0" expanded="true" />
+                <element signature="e#17889#17890#0" expanded="true" />
+                <element signature="e#17991#17992#0" expanded="true" />
+                <marker date="1555764917476" expanded="true" signature="17985:17992" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="51">
+              <caret line="3" column="45" lean-forward="true" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -62,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+            <state relative-caret-position="238">
+              <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -71,58 +82,36 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+            <state relative-caret-position="306">
+              <caret line="19" column="38" lean-forward="true" selection-start-line="19" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/HeartBeat.java" />
         <option value="$PROJECT_DIR$/src/ServerMessage.java" />
-        <option value="$PROJECT_DIR$/src/Server.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
-        <option value="$PROJECT_DIR$/src/Group.java" />
-        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="784" />
-  </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>Android</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
+    <option name="width" value="1296" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
@@ -156,13 +145,8 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555490692274" />
-    <property name="last.edited.regexp" value="Sample Text" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555765193108" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../inettech_client" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -178,9 +162,7 @@
   </component>
   <component name="RunManager">
     <configuration default="true" type="Applet">
-      <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="WIDTH" value="0" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -201,7 +183,6 @@
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -209,7 +190,6 @@
     </configuration>
     <configuration default="true" type="TestNG">
       <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <properties />
       <listeners />
@@ -237,169 +217,87 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c366db37-7d22-4c0f-aa77-79200f5eb596" name="Default" comment="" />
-      <created>1542893202268</created>
+      <changelist id="fe3d3f23-ce73-422b-b369-a0e62a291a86" name="Default" comment="" />
+      <created>1555506721116</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1542893202268</updated>
-      <workItem from="1553073913426" duration="232000" />
-      <workItem from="1553074149557" duration="3228000" />
-      <workItem from="1553518014081" duration="4654000" />
-      <workItem from="1553954284746" duration="4006000" />
-      <workItem from="1555490426578" duration="261000" />
+      <updated>1555506721116</updated>
+      <workItem from="1555688986637" duration="2712000" />
+      <workItem from="1555753821176" duration="5934000" />
     </task>
-    <task id="LOCAL-00001" summary="test">
-      <created>1544711197278</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1544711197278</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java">
-      <created>1545304168110</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1545304168110</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java">
-      <created>1545304184907</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1545304184907</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java">
-      <created>1545308876183</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1545308876183</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java">
-      <created>1547125995576</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1547125995576</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Added functions to join group, send messages in group, leave group and&#10;kick users from group.&#10;added some TODOS to fix">
-      <created>1553522649737</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1553522649737</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Cleaned up Client class">
-      <created>1553955001496</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1553955001496</updated>
-    </task>
-    <task id="LOCAL-00008" summary="added JavaDoc">
-      <created>1553957886288</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1553957886288</updated>
-    </task>
-    <task id="LOCAL-00009" summary="added jarfile to gitignore">
-      <created>1555490682242</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1555490682242</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12381000" />
+    <option name="totallyTimeSpent" value="8649000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15279879" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18496802" />
       <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
       <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32872504" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32900432" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Tool Output" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Tool Output" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32872504" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32911393" />
       <window_info anchor="bottom" id="ANTLR Preview" order="11" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Maven Projects" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="7" />
+      <window_info anchor="right" id="Maven" order="8" />
+      <window_info anchor="right" id="Database" order="9" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test" />
-    <MESSAGE value="Merge branch 'master' of https://github.com/StefGortemaker/Internettechnologie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;out/production/Practicum/Server.class&#10;#&#9;src/Client.java&#10;#&#9;src/Server.java" />
-    <MESSAGE value="Added Group class&#10;Added functions for creating groups, printing userList and printing groupList" />
-    <MESSAGE value="Added functions to join group, send messages in group, leave group and&#10;kick users from group.&#10;added some TODOS to fix" />
-    <MESSAGE value="Cleaned up Client class" />
-    <MESSAGE value="added JavaDoc" />
-    <MESSAGE value="added jarfile to gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="added jarfile to gitignore" />
+    <MESSAGE value="Merge branch 'Fileransfer' of https://github.com/StefGortemaker/Internettechnologie into encryptie&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Practicum/Client.class&#10;#&#9;src/Client.java&#10;#&#9;src/ServerMessage.java" />
+    <MESSAGE value="Merge branch 'Fileransfer' of https://github.com/StefGortemaker/Internettechnologie into encryptie&#10;                        &#10;                        # Conflicts:&#10;                        #&#9;.idea/workspace.xml&#10;                        #&#9;out/production/Practicum/Client.class&#10;                        #&#9;src/Client.java&#10;                        #&#9;src/ServerMessage.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'Fileransfer' of https://github.com/StefGortemaker/Internettechnologie into encryptie&#10;                        &#10;                        # Conflicts:&#10;                        #&#9;.idea/workspace.xml&#10;                        #&#9;out/production/Practicum/Client.class&#10;                        #&#9;src/Client.java&#10;                        #&#9;src/ServerMessage.java" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="744" column="13" lean-forward="true" selection-start-line="744" selection-start-column="13" selection-end-line="744" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/ClientConfiguration.class" />
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/ClientMessage.class" />
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/ServerMessage.class" />
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/NonblockingBufferedReader.class" />
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/Main.class" />
-    <entry file="file://$PROJECT_DIR$/inettech_chat_client/nl/saxion/internettech/Client.class" />
-    <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Group.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1309">
           <caret line="89" column="66" selection-start-line="89" selection-start-column="66" selection-end-line="89" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="45" lean-forward="true" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="19" column="38" lean-forward="true" selection-start-line="19" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -413,104 +311,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1649">
-          <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
+        <state relative-caret-position="955">
+          <caret line="213" column="13" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="13" />
+          <folding>
+            <element signature="e#17689#17690#0" expanded="true" />
+            <element signature="e#17766#17767#0" expanded="true" />
+            <element signature="e#17830#17831#0" expanded="true" />
+            <element signature="e#17889#17890#0" expanded="true" />
+            <element signature="e#17991#17992#0" expanded="true" />
+            <marker date="1555764917476" expanded="true" signature="17985:17992" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>Practicum</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

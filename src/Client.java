@@ -14,6 +14,8 @@ public class Client implements Runnable {
     private HeartBeat heartBeat;
     private PrintWriter writer;
 
+    private Encyptor encyptor;
+
     private boolean running = true;
 
     Client(Socket socket, Server server) {
@@ -26,45 +28,60 @@ public class Client implements Runnable {
         try {
             writer = new PrintWriter(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            encyptor = new Encyptor();
 
             print(ServerMessage.MessageType.HELO.toString());
-
             checkUserName(reader.readLine());
 
             while (running) {
-                String message = reader.readLine();
-                String[] splitMessage = message.split(" ");
+                String encryptedMessage = reader.readLine();
+                System.out.println(encryptedMessage);
+                String decryptedMessage = encyptor.decrypt(encryptedMessage);
+                System.out.println(decryptedMessage);
+                String[] splitMessage = decryptedMessage.split(" ");
                 switch (splitMessage[0]) {
                     case "BCST":
-                        print("+OK " + Encode(message));
-                        broadcastMessage(message);
+                        print("+OK " + Encode(decryptedMessage));
+                        broadcastMessage(decryptedMessage);
                         break;
                     case "CLTLIST":
                         printUsernameList();
                         break;
                     case "GRP_CREATE":
-                        createGroup(message);
+                        createGroup(decryptedMessage);
                         break;
                     case "GRP_JOIN":
-                        joinGroup(message);
+                        joinGroup(decryptedMessage);
                         break;
                     case "GRP_KICK":
-                        kickUserFromGroup(message);
+                        kickUserFromGroup(decryptedMessage);
                         break;
                     case "GRP_LEAVE":
-                        leaveGroup(message);
+                        leaveGroup(decryptedMessage);
                         break;
                     case "GRP_LIST":
                         printGroupNames();
                         break;
                     case "GRP_SEND":
-                        sendGroupMessage(message);
+                        sendGroupMessage(decryptedMessage);
                         break;
                     case "PM":
-                        directMessage(message);
+                        directMessage(decryptedMessage);
                         break;
                     case "PONG":
                         heartBeat.stopTimer();
+                        break;
+                    case "REQ_FILE":
+                        requestFileTransfer(decryptedMessage);
+                        break;
+                    case "ACCEPT_FILE":
+                        acceptFileTransfer(decryptedMessage);
+                        break;
+                    case "DENY_FILE":
+                        denyFileTransfer(decryptedMessage);
+                        break;
+                    case "TRANSFER_FILE":
+                        fileTransfer(decryptedMessage);
                         break;
                     case "QUIT":
                         print("+OK Goodbye");
@@ -77,6 +94,45 @@ public class Client implements Runnable {
         } finally {
             server.disconnectClient(this);
             System.out.println("client stops");
+        }
+    }
+
+    private void acceptFileTransfer(String message) {
+        String[] splitString = message.split(" ", 3);
+        Client client = getClientByUserName(splitString[1]);
+        if (client != null) {
+            ServerMessage acceptFileMessage = new ServerMessage(ServerMessage.MessageType.ACCEPT_FILE, username
+                    + " " +  splitString[2]);
+            client.print(acceptFileMessage.toString());
+        } else print("-ERR User is not logged on");
+    }
+
+    private void broadcastMessage(String message) {
+        String[] spiltMessage = message.split(" ", 2);
+        ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
+                username + " " + spiltMessage[1]);
+
+        for (Client c : server.getClients()) {
+            if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
+        }
+    }
+
+    private void checkUserName(String heloName) throws IOException {
+        String decryptedHeloName = encyptor.decrypt(heloName);
+        String[] parts = decryptedHeloName.split(" ");
+        String name = parts[1];
+
+        if (name.matches("^[a-zA-Z0-9_]+$")) {
+            if (!isUserLoggedIn(name)) {
+                print("+OK " + Encode(heloName));
+                username = name;
+            } else {
+                print("-ERR user already logged in");
+                socket.close();
+            }
+        } else {
+            print("-ERR username has an invalid format");
+            socket.close();
         }
     }
 
@@ -97,44 +153,14 @@ public class Client implements Runnable {
         }
     }
 
-    private String Encode(String line) {
-        try {
-            byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] newLine = md.digest(bytes);
-            return new String(Base64.getEncoder().encode(newLine));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void broadcastMessage(String message) {
-        String[] spiltMessage = message.split(" ", 2);
-        ServerMessage broadcastMessage = new ServerMessage(ServerMessage.MessageType.BCST,
-                username + " " + spiltMessage[1]);
-
-        for (Client c : server.getClients()) {
-            if (!c.getSocket().equals(socket)) c.print(broadcastMessage.toString());
-        }
-    }
-
-    private void checkUserName(String heloName) throws IOException {
-        String[] parts = heloName.split(" ");
-        String name = parts[1];
-
-        if (name.matches("^[a-zA-Z0-9_]+$")) {
-            if (!isUserLoggedIn(name)) {
-                print("+OK " + Encode(heloName));
-                username = name;
-            } else {
-                print("-ERR user already logged in");
-                socket.close();
-            }
-        } else {
-            print("-ERR username has an invalid format");
-            socket.close();
-        }
+    private void denyFileTransfer(String message) {
+        String[] splitString = message.split(" ", 3);
+        Client client = getClientByUserName(splitString[1]);
+        if (client != null) {
+            ServerMessage acceptFileMessage = new ServerMessage(ServerMessage.MessageType.DENY_FILE, username
+                    + " " +  splitString[2]);
+            client.print(acceptFileMessage.toString());
+        } else print("-ERR User is not logged on");
     }
 
     private void directMessage(String message) {
@@ -154,11 +180,47 @@ public class Client implements Runnable {
         } else print("-ERR User is not logged on");
     }
 
+    private String Encode(String line) {
+        try {
+            byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] newLine = md.digest(bytes);
+            return new String(Base64.getEncoder().encode(newLine));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private void fileTransfer(String message) throws IOException {
+        String[] splitMessage = message.split(" ", 3);
+        Client client = getClientByUserName(splitMessage[1]);
+        if (client != null) {
+            ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.TRANSFER_FILE, splitMessage[1]
+                    + " " + splitMessage[2]);
+            client.print(serverMessage.toString());
+
+            int bytesRead;
+
+            DataInputStream clientData = new DataInputStream(socket.getInputStream());
+
+            DataOutputStream outputStream = new DataOutputStream(client.getSocket().getOutputStream());
+            outputStream.writeUTF(clientData.readUTF());
+            long size = clientData.readLong();
+            outputStream.writeLong(size);
+            byte[] buffer = new byte[(int) size];
+            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                size -= bytesRead;
+            }
+
+        } else print("-ERR User is not logged on");
+    }
+
     private void joinGroup(String message) {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
         ServerMessage joinMessage = new ServerMessage(ServerMessage.MessageType.GRP_JOIN,
-            username + " " + groupName);
+                username + " " + groupName);
 
         Group group = getGroupByGroupName(groupName);
         if (group != null && !group.isUserInGroup(this)) {
@@ -176,7 +238,7 @@ public class Client implements Runnable {
         String[] splitMessage = message.split(" ", 2);
         String groupName = splitMessage[1];
         ServerMessage leaveMessage = new ServerMessage(ServerMessage.MessageType.GRP_LEAVE,
-            groupName + " " + username);
+                groupName + " " + username);
 
         Group group = getGroupByGroupName(groupName);
         if (group != null && !group.isUserInGroup(this)) {
@@ -209,9 +271,9 @@ public class Client implements Runnable {
         String groupName = splitMessage[1];
         String clientName = splitMessage[2];
         ServerMessage clientKickMessage = new ServerMessage(ServerMessage.MessageType.GRP_KICK,
-            groupName);
+                groupName);
         ServerMessage groupKickMessage = new ServerMessage(ServerMessage.MessageType.GRP_KICK,
-            groupName + " " + username);
+                groupName + " " + username);
 
         Group group = getGroupByGroupName(groupName); // get group
         if (group != null && group.isLeader(username)) { // check if group exists and if this client is the group leader
@@ -253,6 +315,16 @@ public class Client implements Runnable {
             userNameList.append(client.getUsername()).append(", \n");
         }
         print(userNameList.toString());
+    }
+
+    private void requestFileTransfer(String mesage) {
+        String[] splitMessage = mesage.split(" ", 3);
+        Client client = getClientByUserName(splitMessage[1]);
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.REQ_FILE,
+                username + " " + splitMessage[2]);
+        if (client != null) {
+            client.print(serverMessage.toString());
+        } else print("-ERR User is not logged on");
     }
 
     /**
@@ -331,7 +403,7 @@ public class Client implements Runnable {
      * @param message The message that needs to be printed to the client
      */
     void print(String message) {
-        writer.println(message);
+        writer.println(encyptor.encrypt(message));
         writer.flush();
     }
 
