@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe3d3f23-ce73-422b-b369-a0e62a291a86" name="Default" comment="added some more javadoc">
+    <list default="true" id="fe3d3f23-ce73-422b-b369-a0e62a291a86" name="Default" comment="Small updates to group kick">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Practicum/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Practicum/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Practicum/HeartBeat.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerMessage.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="363" column="52" lean-forward="true" selection-start-line="363" selection-start-column="52" selection-end-line="363" selection-end-column="52" />
+            <state relative-caret-position="156">
+              <caret line="393" column="48" lean-forward="true" selection-start-line="393" selection-start-column="48" selection-end-line="393" selection-end-column="48" />
               <folding>
                 <element signature="e#23733#23734#0" expanded="true" />
                 <element signature="e#23762#23763#0" expanded="true" />
@@ -44,7 +45,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Group.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
+            <state relative-caret-position="553">
               <caret line="80" column="9" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
             </state>
           </provider>
@@ -65,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+            <state relative-caret-position="170">
+              <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -98,9 +99,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/Encyptor.java" />
-        <option value="$PROJECT_DIR$/src/ServerMessage.java" />
         <option value="$PROJECT_DIR$/src/Server.java" />
         <option value="$PROJECT_DIR$/src/HeartBeat.java" />
+        <option value="$PROJECT_DIR$/src/ServerMessage.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
       </list>
     </option>
@@ -141,7 +142,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555790622593" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555791240707" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -221,7 +222,7 @@
       <workItem from="1555688986637" duration="2712000" />
       <workItem from="1555753821176" duration="5934000" />
       <workItem from="1555785866536" duration="2748000" />
-      <workItem from="1555789391549" duration="1136000" />
+      <workItem from="1555789391549" duration="1782000" />
     </task>
     <task id="LOCAL-00001" summary="Added javdoc for Client class">
       <created>1555772096378</created>
@@ -244,11 +245,18 @@
       <option name="project" value="LOCAL" />
       <updated>1555789108641</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Small updates to group kick">
+      <created>1555790667066</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1555790667066</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19628000" />
+    <option name="totallyTimeSpent" value="20274000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -263,7 +271,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32900432" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32900432" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -297,7 +305,8 @@
     <MESSAGE value="Added javdoc for Client class" />
     <MESSAGE value="Cleaned up a bit" />
     <MESSAGE value="added some more javadoc" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some more javadoc" />
+    <MESSAGE value="Small updates to group kick" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small updates to group kick" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -323,13 +332,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/HeartBeat.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -351,17 +353,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Group.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="553">
           <caret line="80" column="9" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="363" column="52" lean-forward="true" selection-start-line="363" selection-start-column="52" selection-end-line="363" selection-end-column="52" />
+        <state relative-caret-position="156">
+          <caret line="393" column="48" lean-forward="true" selection-start-line="393" selection-start-column="48" selection-end-line="393" selection-end-column="48" />
           <folding>
             <element signature="e#23733#23734#0" expanded="true" />
             <element signature="e#23762#23763#0" expanded="true" />

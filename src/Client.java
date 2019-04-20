@@ -391,11 +391,11 @@ public class Client implements Runnable {
      */
     private void printGroupNames() {
         StringBuilder userNameList = new StringBuilder();
-        userNameList.append("+OK ");
         for (Group group : server.getGroups()) {
             userNameList.append(group.getName()).append(", \n");
         }
-        print(userNameList.toString());
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.GRPLIST, userNameList.toString());
+        print(serverMessage.toString());
     }
 
     /**
@@ -404,11 +404,11 @@ public class Client implements Runnable {
      */
     private void printUsernameList() {
         StringBuilder userNameList = new StringBuilder();
-        userNameList.append("+OK ");
         for (Client client : server.getClients()) {
             userNameList.append(client.getUsername()).append(", \n");
         }
-        print(userNameList.toString());
+        ServerMessage serverMessage = new ServerMessage(ServerMessage.MessageType.CLTLIST, userNameList.toString());
+        print(serverMessage.toString());
     }
 
     /**
